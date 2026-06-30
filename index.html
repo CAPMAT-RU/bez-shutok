@@ -179,7 +179,6 @@
       opacity: 0;
       transform: translateY(10px);
       transition: all 0.3s ease;
-      pointer-events: none; 
     }
     
     .reactions.visible {
@@ -332,67 +331,57 @@
         imgHtml = `<div style="width:100%; height:200px; background:#eee; display:flex; align-items:center; justify-content:center; color:#888;">Нет фото</div>`;
       }
 
-      // Генерируем HTML для кнопок реакций
-      let reactionsHtml = '';
-      Object.keys(news.reactions).forEach(emoji => {
-        const count = news.reactions[emoji];
-        reactionsHtml += `
-          <div class="reaction-group" onclick="handleReaction(this, '${emoji}', ${count})">
-            <button class="reaction-btn">${emoji}</button>
-            <span class="reaction-count" data-count="${count}">${count}</span>
-          </div>
-        `;
-      });
-
-      // 👇 ВСТАВЛЯТЬ ЭТОТ КОД ВМЕСТО УДАЛЁННОГО 👇
-    const html = `
-      <div class="card" id="card-${news.id}">
-        <div class="card-header">
-          <h3>${news.title}</h3>
-          <span class="category-badge">${news.category}</span>
-        </div>
-
-        ${imgHtml}
-
-        <div class="card-body">
-          <div class="card-meta">
-            <span>${news.author}</span>
-            <span>${date}</span>
+      // ШАБЛОН КАРТОЧКИ (Чистый, без onclick на самой карточке)
+      const html = `
+        <div class="card" id="card-${news.id}">
+          <div class="card-header">
+            <h3>${news.title}</h3>
+            <span class="category-badge">${news.category}</span>
           </div>
 
-          <!-- Скрытый текст -->
-          <div class="card-content">
-            <p>${news.fullText}</p>
-          </div>
+          ${imgHtml}
 
-          <!-- Блок реакций (автоматический, с правильным классом) -->
-          <div class="reactions">
-            ${Object.entries(news.reactions).map(([emoji, count]) => `
-              <button class="reaction-btn" onclick="handleReaction(this, '${emoji}', ${count})">
-                ${emoji} <span class="reaction-count">${count}</span>
-              </button>
-            `).join('')}
+          <div class="card-body">
+            <div class="card-meta">
+              <span>${news.author}</span>
+              <span>${date}</span>
+            </div>
+
+            <!-- Скрытый текст -->
+            <div class="card-content">
+              <p>${news.fullText}</p>
+            </div>
+
+            <!-- Блок реакций (Генерируется автоматически) -->
+            <div class="reactions">
+              ${Object.entries(news.reactions).map(([emoji, count]) => `
+                <button class="reaction-btn" onclick="handleReaction(this, '${emoji}', ${count})">
+                  ${emoji} <span class="reaction-count">${count}</span>
+                </button>
+              `).join('')}
+            </div>
           </div>
         </div>
-      </div>
-    `;
+      `;
 
-    container.innerHTML += html;
+      container.innerHTML += html;
 
-    // 👇 ЭТОТ БЛОК ТОЖЕ ОБЯЗАТЕЛЬНО ВСТАВИТЬ СЮДА (сразу после container.innerHTML) 👇
-    const card = document.getElementById(`card-${news.id}`);
-    
-    if (card) {
-      card.addEventListener('click', (event) => {
-        const isReactionBtn = event.target.closest('.reaction-btn');
-        if (isReactionBtn) {
-          return; // Если клик по реакции — карточка НЕ сворачивается
-        }
-        toggleCard(card); // Если клик в другом месте — открываем/закрываем
-      });
-    }
-    // 👆---------------------------------------------------------------👆
-  });
+      // НАСТРАИВАЕМ КЛИК ПО КАРТОЧКЕ (Защита от сворачивания при клике на реакцию)
+      const card = document.getElementById(`card-${news.id}`);
+      if (card) {
+        card.addEventListener('click', (event) => {
+          // Если клик был прямо по кнопке реакции ИЛИ по тексту внутри неё
+          const isReactionBtn = event.target.closest('.reaction-btn');
+          
+          if (isReactionBtn) {
+            return; // Если это реакция — НЕ сворачиваем карточку, просто считаем лайк
+          }
+          
+          // Иначе — сворачиваем/разворачиваем
+          toggleCard(card);
+        });
+      }
+    });
 
     // --- ЛОГИКА РАСКРЫТИЯ КАРТОЧКИ (АККОРДЕОН) ---
     function toggleCard(cardElement) {
@@ -436,15 +425,6 @@
       
       console.log(`Нажато ${emoji}, новый счёт: ${newCount}`);
     };
-document.addEventListener('click', (event) => {
-  // 1. Проверяем: клик был по кнопке реакции?
-  const reactionBtn = event.target.closest('.reaction-btn');
-  
-  if (reactionBtn) {
-    // Если да — ничего не делаем. Пусть функция toggleCard (если она есть) сработает,
-    // но мы принудительно остановим любые другие действия, которые могли бы закрыть карточку.
-    return; 
-  }
 
   // 2. (Опционально) Если у тебя карточка закрывается из-за всплытия события,
   // этот код выше уже должен это предотвратить.
