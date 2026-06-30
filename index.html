@@ -13,13 +13,54 @@
             --menu-bg: #2c2c2c;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
         
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; z-index: 10; position: relative; }
-        .logo { font-size: 24px; font-weight: 700; letter-spacing: 1px; color: var(--accent-color); }
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* Фиксированная шапка */
+        header { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 60px; 
+            background-color: var(--bg-color);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 40px; 
+            z-index: 1000; 
+            border-bottom: 1px solid #333;
+        }
+
+        .logo { 
+            font-size: 24px; 
+            font-weight: 700; 
+            letter-spacing: 1px; 
+            color: var(--accent-color); 
+        }
         
-        .burger { cursor: pointer; width: 30px; height: 21px; position: relative; outline: none; -webkit-tap-highlight-color: transparent; }
-        .burger span { position: absolute; width: 100%; height: 3px; background-color: var(--text-color); border-radius: 2px; transition: all 0.3s ease; }
+        .burger { 
+            cursor: pointer; 
+            width: 30px; 
+            height: 21px; 
+            position: relative; 
+            outline: none; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+        .burger span { 
+            position: absolute; 
+            width: 100%; 
+            height: 3px; 
+            background-color: var(--text-color); 
+            border-radius: 2px; 
+            transition: all 0.3s ease; 
+        }
         .burger span:nth-child(1) { top: 0; }
         .burger span:nth-child(2) { top: 9px; }
         .burger span:nth-child(3) { top: 18px; }
@@ -28,29 +69,59 @@
         .burger.active span:nth-child(3) { transform: rotate(-45deg); top: 9px; }
 
         .mobile-menu { 
-            position: fixed; top: 0; left: -100%; width: 70%; height: 100vh; 
-            background-color: var(--menu-bg); padding: 60px 20px; 
+            position: fixed; 
+            top: 60px; /* Сразу под фиксированной шапкой */
+            left: -100%; 
+            width: 70%; 
+            height: calc(100vh - 60px); 
+            background-color: var(--menu-bg); 
+            padding: 20px 20px; 
             transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
-            z-index: 20; display: flex; flex-direction: column; gap: 20px; 
+            z-index: 999; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
         }
         .mobile-menu.open { left: 0; }
         
         .nav-link { 
-            color: var(--text-color); text-decoration: none; font-size: 18px; 
-            padding: 10px 0; border-bottom: 1px solid #333; cursor: pointer; 
-            user-select: none; transition: color 0.2s; outline: none;
+            color: var(--text-color); 
+            text-decoration: none; 
+            font-size: 18px; 
+            padding: 8px 0; 
+            border-bottom: 1px solid #444; 
+            cursor: pointer; 
+            user-select: none; 
+            transition: color 0.2s; 
+            outline: none;
         }
         .nav-link:hover, .nav-link.active { color: var(--accent-color); }
 
-        main { flex: 1; padding: 40px; max-width: 1200px; margin: 0 auto; width: 100%; }
+        main { 
+            /* Отступ сверху равен высоте фиксированной шапки */
+            margin-top: 60px; 
+            padding: 40px; 
+            max-width: 1200px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            width: 100%; 
+            flex: 1;
+        }
         
         .filter-buttons { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
         .filter-btn {
-            background: transparent; border: 1px solid #444; color: #aaa; padding: 8px 16px; 
-            cursor: pointer; border-radius: 6px; font-size: 14px;
+            background: transparent; 
+            border: 1px solid #444; 
+            color: #aaa; 
+            padding: 8px 16px; 
+            cursor: pointer; 
+            border-radius: 6px; 
+            font-size: 14px;
         }
         .filter-btn.active, .filter-btn:hover {
-            border-color: var(--accent-color); color: var(--accent-color); background: rgba(255,71,87,0.1);
+            border-color: var(--accent-color); 
+            color: var(--accent-color); 
+            background: rgba(255,71,87,0.1);
         }
 
         h2.section-title { margin-bottom: 20px; border-left: 5px solid var(--accent-color); padding-left: 15px; }
@@ -58,9 +129,15 @@
         .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
 
         .news-card {
-            background-color: var(--card-bg); padding: 20px; border-radius: 12px;
-            transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
-            cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent;
+            background-color: var(--card-bg); 
+            padding: 20px; 
+            border-radius: 12px;
+            transition: transform 0.2s, box-shadow 0.2s; 
+            display: flex; 
+            flex-direction: column;
+            cursor: pointer; 
+            outline: none; 
+            -webkit-tap-highlight-color: transparent;
         }
         .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
@@ -69,6 +146,7 @@
         .card-title { font-size: 20px; margin-bottom: 15px; line-height: 1.3; }
         .card-meta { margin-top: auto; display: flex; justify-content: space-between; font-size: 14px; color: #aaa; align-items: flex-end; }
         .author { font-weight: bold; color: var(--text-color); }
+        .publish-time { color: #888; }
 
         .full-content { display: none; margin-top: 15px; font-size: 16px; line-height: 1.6; color: #ddd; }
         .expanded .full-content { display: block; }
@@ -80,6 +158,7 @@
 </head>
 <body>
 
+    <!-- Фиксированная шапка -->
     <header>
         <div class="logo">Без шуток</div>
         <div class="burger" id="burger">
@@ -101,7 +180,6 @@
             <button class="filter-btn active" onclick="filterNews('all')">Все</button>
             <button class="filter-btn" onclick="filterNews('Политика')">Политика</button>
             <button class="filter-btn" onclick="filterNews('Регионы')">Регионы</button>
-            <!-- Исправлено: теперь значение совпадает с категорией в данных -->
             <button class="filter-btn" onclick="filterNews('Абсурд')">Абсурд</button>
         </div>
 
@@ -138,14 +216,14 @@
                title: "Очередные озабоченности",
                category: "Политика",
                author: "Автор: Дмитрий Мусиенко",
-               time: "0:36", // Вставьте сюда нужное время
+               time: "0:36",
                image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260630_232249.png",
                content: "В Украину улетел второй транш на беспилотники — 3,9 млрд евро. Общий котел — 90 млрд. Первый куш в 3,2 млрд ушел 25 июня. Представитель Еврокомиссии Балаш Уйвари пожаловался на странную проблему: денег дают столько, что Киев не успевает их тратить. По словам чиновника, бумаги оформлены лишь на 5 млрд евро. Пока нет контрактов — нет и кэша. Осталось 900 млн, на которые ждут хоть каких-то документов. Игнорировать этот поток — значит тешить себя иллюзиями. Оппоненты активно закупаются, и игра в поддавки тут неуместна. Жесткие симметричные ответы по инфраструктуре или экономике — единственное, что сейчас хоть как-то работает. Зверье понимает только язык последствий. Европа кормит войну, пока бюрократия не поспевает за аппетитами."
            },
             {
                 title: "Очередная чушь от Милонова",
                 category: "Политика",
-                author: "САРМАТ",
+                author: "Дмитрий Мусиенко",
                 time: "22:45",
                 image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/i%20(1).jpeg",
                 content: "В Госдуме решили, что GTA 6 — это не просто игра, а настоящий сгусток американского зла. Депутат Виталий Милонов взял на себя роль главного моралистa и заявил, что в новой части всё про насилие и хулиганство, что, конечно, соответствует некоему «американскому образу жизни». Но не переживайте, наши геймеры, по словам Милонова, вас это не касается. «Нормальные люди» же вряд ли потянутся за персонажами из игры - ведь кто, как не депутат, знает, что в Америке дела обстоят иначе? В общем, пока мы тут такую ерунду обсуждаем, игроки в мире безумия развлекаются."
@@ -157,50 +235,28 @@
                 time: "17:16",
                 image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260630_194726.png",
                 content: "Россия решила, что импорт топлива — это как раз тот ход, который поможет успокоить рынок. Дмитрий Песков говорит, что с другими странами уже ведутся переговоры, и если ценовые рамки устроят, то бензин полетит к нам, как горячие пирожки. А вот вице-премьер Александр Новак тоже не дремлет: хочет уменьшить обязательные продажи бензина на бирже с 15% до 10%. А еще на повестке дня стоит запрет на экспорт дизеля — прям как в сказке, где всё под контролем. Так что, держите уши востро — в мире топлива назревают интересные перемены!"
-            },
-            {
-                title: "Ремонт дорог в области",
-                category: "Регионы",
-                author: "САРМАТ",
-                image: "https://via.placeholder.com/300x200/7a7a7a/fff?text=Roads",
-                content: "В области начался масштабный ремонт дорог. В этом году планируют привести в порядок 150 километров трасс. Особое внимание уделят подъездам к школам и больницам."
-            },
-            {
-                // Исправлено: категория теперь строго "Абсурд", чтобы совпадала с кнопками
-                title: "Запрет на тень",
-                category: "Абсурд",
-                author: "САРМАТ",
-                image: "https://via.placeholder.com/300x200/aaa/fff?text=Shadow",
-                content: "В одном из городов предложили штрафовать за создание тени на муниципальной территории в часы пик. По словам чиновников, тень мешает работе солнечных панелей."
-            },
-            {
-                title: "Новый закон о тишине",
-                category: "Политика",
-                author: "САРМАТ",
-                image: "https://via.placeholder.com/300x200/5a5a5a/fff?text=Silence",
-                content: "Депутаты предложили ужесточить штрафы за шум после 23:00. Штрафы могут вырасти в 3 раза."
-            }
+            },                             
         ];
 
         function createCardHTML(item, uniqueId) {
-    return `
-        <article class="news-card" data-id="${uniqueId}">
-            <img src="${item.image}" alt="${item.title}" class="card-media" onerror="this.src='https://via.placeholder.com/300x200/333/fff?text=Image+Error'">
-            <span class="category-tag">${item.category}</span>
-            <h3 class="card-title">${item.title}</h3>
-            <div class="card-meta">
-                <span class="author">${item.author}</span>
-                <span class="publish-time" style="color: #aaa; font-size: 14px;">${item.time || ''}</span>
-            </div>
-            <div class="card-summary" style="display: block;">
-                <p style="color: #aaa; font-size: 14px;">Нажмите на карточку, чтобы прочитать</p>
-            </div>
-            <div class="full-content" style="display: none;">
-                ${item.content.replace(/\n/g, '<br>')}
-            </div>
-        </article>
-    `;
-}
+            return `
+                <article class="news-card" data-id="${uniqueId}">
+                    <img src="${item.image}" alt="${item.title}" class="card-media" onerror="this.src='https://via.placeholder.com/300x200/333/fff?text=Image+Error'">
+                    <span class="category-tag">${item.category}</span>
+                    <h3 class="card-title">${item.title}</h3>
+                    <div class="card-meta">
+                        <span class="author">${item.author}</span>
+                        <span class="publish-time">${item.time || ''}</span>
+                    </div>
+                    <div class="card-summary" style="display: block;">
+                        <p style="color: #aaa; font-size: 14px;">Нажмите на карточку, чтобы прочитать</p>
+                    </div>
+                    <div class="full-content" style="display: none;">
+                        ${item.content.replace(/\n/g, '<br>')}
+                    </div>
+                </article>
+            `;
+        }
 
         function init() {
             document.getElementById('grid-all').innerHTML = '';
@@ -222,7 +278,6 @@
                 if (item.category === "Регионы") {
                     document.getElementById('grid-regions').insertAdjacentHTML('beforeend', createCardHTML(item, idRegions));
                 }
-                // Теперь условие точно совпадает с данными
                 if (item.category === "Абсурд") {
                     document.getElementById('grid-absurd').insertAdjacentHTML('beforeend', createCardHTML(item, idAbsurd));
                 }
@@ -256,7 +311,6 @@
             event.target.classList.add('active');
 
             document.querySelectorAll('.news-grid').forEach(grid => grid.style.display = 'none');
-            
             if (category === 'all') {
                 document.getElementById('grid-all').style.display = 'grid';
                 window.scrollTo({ top: document.getElementById('all').offsetTop - 100, behavior: 'smooth' });
@@ -264,13 +318,12 @@
                 const idMap = {
                     'Политика': 'grid-politics',
                     'Регионы': 'grid-regions',
-                    // Теперь ключ тоже "Абсурд", а не "Абсурдные законы"
                     'Абсурд': 'grid-absurd'
                 };
                 const gridId = idMap[category];
                 if (gridId) {
                     document.getElementById(gridId).style.display = 'grid';
-                                        const sectionId = category === 'Абсурд' ? 'absurd' : category.toLowerCase();
+                    const sectionId = category === 'Абсурд' ? 'absurd' : category.toLowerCase();
                     const targetElement = document.getElementById(sectionId);
                     if (targetElement) {
                         window.scrollTo({ top: targetElement.offsetTop - 100, behavior: 'smooth' });
@@ -289,6 +342,7 @@
 
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
+                e.preventDefault();
                 burger.classList.remove('active');
                 mobileMenu.classList.remove('open');
                 
