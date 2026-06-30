@@ -1,30 +1,24 @@
-```astro
+```astro---
+import { getCollection } from 'astro:content';
+
+// Получаем все записи из нашей коллекции 'posts'
+const allPosts = await getCollection('posts');
 ---
-// Это зона кода - здесь мы будем запрашивать данные из ваших Markdown файлов
-const title = "БЕЗ ШУТОК";
----
 
 
 
-{title}
+Мой блог
 
 
-БЕЗ ШУТОК
+{allPosts.map((post) => (
 
 
+{post.data.title}
+
+{post.data.description}
 
 
-
-Свежие материалы
-
-
-
-Первая новость: Почему всё именно так?
-
-
-Краткое содержание того, что происходит, пока вы пьете кофе...
-
-
+))}
 
 
 
