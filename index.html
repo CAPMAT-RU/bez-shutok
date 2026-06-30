@@ -314,7 +314,21 @@
     const container = document.getElementById('news-container');
     let html = '';
 
-    newsData.forEach(news => {
+ // ДОБАВЬ ЭТУ ФУНКЦИЮ ПЕРЕД ГЕНЕРАЦИЕЙ КАРТОЧЕК
+    function toggleCard(cardElement) {
+      const content = cardElement.querySelector('.card-content');
+      const reactions = cardElement.querySelector('.reactions');
+
+      if (content.classList.contains('expanded')) {
+        // Если открыто -> закрываем
+        content.classList.remove('expanded');
+        reactions.classList.remove('visible');
+      } else {
+        // Если закрыто -> открываем
+        content.classList.add('expanded');
+        reactions.classList.add('visible');
+      }
+    }
       const date = getAutoDate(); 
       
       let imgHtml = '';
@@ -324,28 +338,26 @@
         imgHtml = `<div style="width:100%; height:200px; background:#eee; display:flex; align-items:center; justify-content:center; color:#888;">Нет фото</div>`;
       }
 
-      // ШАБЛОН КАРТОЧКИ (Чистый, без onclick на самой карточке)
+      // ШАБЛОН: Добавлен класс 'visible', исправлен класс категории, убран лишний header
       const html = `
-        <div class="card" id="card-${news.id}">
-          <div class="card-header">
-            <h3>${news.title}</h3>
-            <span class="category-badge">${news.category}</span>
-          </div>
-
-          ${imgHtml}
-
+        <div class="card visible" id="card-${news.id}"> 
           <div class="card-body">
             <div class="card-meta">
               <span>${news.author}</span>
               <span>${date}</span>
             </div>
 
+            <h3 class="card-title">${news.title}</h3>
+            <span class="category">${news.category}</span> 
+
+            ${imgHtml}
+
             <!-- Скрытый текст -->
             <div class="card-content">
               <p>${news.fullText}</p>
             </div>
 
-            <!-- Блок реакций (Генерируется автоматически) -->
+            <!-- Блок реакций -->
             <div class="reactions">
               ${Object.entries(news.reactions).map(([emoji, count]) => `
                 <button class="reaction-btn" onclick="handleReaction(this, '${emoji}', ${count})">
@@ -356,6 +368,19 @@
           </div>
         </div>
       `;
+
+      container.innerHTML += html;
+
+      // НАСТРАИВАЕМ КЛИК ПО КАРТОЧКЕ
+      const card = document.getElementById(`card-${news.id}`);
+      if (card) {
+        card.addEventListener('click', (event) => {
+          const isReactionBtn = event.target.closest('.reaction-btn');
+          if (isReactionBtn) return; 
+          toggleCard(card);
+        });
+      }
+    });
 
       container.innerHTML += html;
 
