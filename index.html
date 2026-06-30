@@ -1,98 +1,278 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Без шуток | Новости с иронией</title>
-<style>
-:root { --bg-color: #f0f2f5; --card-bg: #ffffff; --text-main: #111; --accent: #d32f2f; --border: #ddd; }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
-a { text-decoration: none; color: inherit; }
-header { background: var(--card-bg); padding: 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; }
-.logo { font-size: 1.2rem; font-weight: 800; color: var(--accent); text-transform: uppercase; }
-nav ul { display: flex; gap: 15px; flex-wrap: wrap; }
-nav a { font-weight: 500; font-size: 0.9rem; }
-nav a:hover { color: var(--accent); }
-.hero { text-align: center; padding: 2rem 1rem; max-width: 800px; margin: 0 auto; }
-.hero h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-.container { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; display: grid; grid-template-columns: 1fr; gap: 1rem; }
-.card { background: var(--card-bg); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.03); }
-.card-image { width: 100%; height: 200px; object-fit: cover; }
-.card-body { padding: 1rem; }
-.category { font-size: 0.7rem; text-transform: uppercase; color: var(--accent); font-weight: bold; margin-bottom: 0.5rem; display: block; }
-.card-title { font-size: 1.1rem; margin-bottom: 0.5rem; line-height: 1.4; }
-.card-meta { color: #777; font-size: 0.8rem; margin-top: 0.5rem; }
-footer { text-align: center; padding: 1rem; color: #777; border-top: 1px solid var(--border); margin-top: 2rem; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Без шуток | Новости с иронией</title>
+  <style>
+    /* --- СТИЛИ (CSS) --- */
+    :root {
+      --bg-color: #f0f2f5;
+      --card-bg: #ffffff;
+      --text-main: #111;
+      --accent: #d32f2f; /* Строгий красный */
+      --border: #ddd;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ШАПКА И МЕНЮ-ФИЛЬТРЫ */
+    header {
+      background: var(--card-bg);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap; /* Чтобы на телефоне переносилось */
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      background: transparent;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* ГЛАВНЫЙ ЭКРАН */
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .hero h1 { font-size: 2rem; margin-bottom: 1rem; }
+    .hero p { font-size: 1rem; color: #555; }
+
+    /* СЕТКА НОВОСТЕЙ */
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    /* КАРТОЧКА */
+    .card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+      transition: transform 0.2s;
+      display: none; /* Скрываем по умолчанию, показываем через JS */
+    }
+    
+    .card.visible { display: block; } /* Класс для показа */
+
+    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+
+    .card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card-body { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+    .category {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .card-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+    .card-meta {
+      color: #777;
+      font-size: 0.85rem;
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #777;
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 600px) {
+      header { flex-direction: column; gap: 1rem; text-align: center; }
+      .filters { justify-content: center; }
+      .hero h1 { font-size: 1.8rem; }
+    }
+  </style>
 </head>
 <body>
-<header>
-<div class="logo">БЕЗ ШУТОК</div>
-<nav>
-<ul>
-<li><a href="#">Главная</a></li>
-<li><a href="#">Политика</a></li>
-<li><a href="#">Мемы</a></li>
-</ul>
-</nav>
-</header>
-<section class="hero">
-<h1>Новости, которые бьют прямо в лоб</h1>
-<p>Никакой воды. Только факты, приправленные абсурдом.</p>
-</section>
-<main class="container" id="news-container">
-<p>Загрузка новостей...</p>
-</main>
-<footer><p>&copy; 2026 ©Без шуток</p></footer>
 
-<script>
-const newsData = [
-  {
-    "id": 1,
-    "category": "Технологии",
-    "title": "Робот-курьер застрял в луже и начал цитировать философов",
-    "author": "Иван Иванов",
-    "date": "Сегодня, 10:00",
-    "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    "video": null
-  },
-  {
-    "id": 2,
-    "category": "Экономика",
-    "title": "Курс валют такой волатильный, что даже хомяк в колесе устал его предсказывать",
-    "author": "Петр Петров",
-    "date": "Вчера, 18:30",
-    "image": null,
-    "video": null
-  }
-];
+  <!-- ШАПКА С ФИЛЬТРАМИ -->
+  <header>
+    <div class="logo">БЕЗ ШУТОК</div>
+    <nav class="filters">
+      <!-- Кнопки будут генерироваться JS, но оставим одну для красоты -->
+      <button class="filter-btn active" onclick="filterNews('all')">Все</button>
+      <button class="filter-btn" onclick="filterNews('Политика')">Политика</button>
+      <button class="filter-btn" onclick="filterNews('Геополитика')">Геополитика</button>
+      <button class="filter-btn" onclick="filterNews('Юмор')">Юмор</button>
+      <button class="filter-btn" onclick="filterNews('Бытовой абсурд')">Бытовой абсурд</button>
+    </nav>
+  </header>
 
-const container = document.getElementById('news-container');
-let html = '';
+  <!-- ГЛАВНЫЙ БЛОК -->
+  <section class="hero">
+    <h1>Новости, которые бьют прямо в лоб</h1>
+    <p>Никакой воды. Только факты, приправленные абсурдом.</p>
+  </section>
 
-newsData.forEach(news => {
-  let imgHtml = '';
-  if (news.image) {
-    imgHtml = `<img src="${news.image}" class="card-image" alt="News image">`;
-  }
-  
-  html += `
-    <div class="card">
-      ${imgHtml}
-      <div class="card-body">
-        <span class="category">${news.category}</span>
-        <h3 class="card-title">${news.title}</h3>
-        <div class="card-meta">
-          <span>${news.author}</span>
-          <span>${news.date}</span>
+  <!-- ЛЕНТА НОВОСТЕЙ -->
+  <main class="container" id="news-container">
+    <!-- Сюда JS вставит карточки -->
+    <p class="loading">Загрузка новостей...</p>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Без шуток. Ирония — наше всё.</p>
+  </footer>
+
+  <script>
+    // --- ДАННЫЕ (ТВОЯ АДМИНКА) ---
+    const newsData = [
+      {
+        "id": 1,
+        "category": "Политика",
+        "title": "Депутат предложил запретить гравитацию из-за её непредсказуемости",
+        "author": "Иван Иванов",
+        // date мы НЕ пишем сюда, его поставит скрипт автоматически!
+        "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        "video": null
+      },
+      {
+        "id": 2,
+        "category": "Геополитика",
+        "title": "Две страны договорились о мире, но забыли сообщить об этом своим картам",
+        "author": "Петр Петров",
+        "image": null,
+        "video": null
+      },
+      {
+        "id": 3,
+        "category": "Юмор",
+        "title": "Кот разгромил кухню, заявив, что это был перформанс современного искусства",
+        "author": "Анна Смирнова",
+        "image": "https://images.unsplash.com/photo-1496181133846-5ae751881064?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        "video": null
+      },
+      {
+        "id": 4,
+        "category": "Бытовой абсурд",
+        "title": "Человек пытался разогреть суп в микроволновке, но она отказалась, сославшись на экзистенциальный кризис",
+        "author": "Сергей Сидоров",
+        "image": null,
+        "video": null
+      }
+    ];
+
+    // --- ФУНКЦИЯ АВТО-ДАТЫ ---
+    function getAutoDate() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      return `Сегодня, ${hours}:${minutes}`;
+    }
+
+    // --- ОТРИСОВКА НОВОСТЕЙ ---
+    const container = document.getElementById('news-container');
+    let html = '';
+
+    newsData.forEach(news => {
+      // Получаем дату автоматически
+      const date = getAutoDate(); 
+      
+      let imgHtml = '';
+      if (news.image) {
+        imgHtml = `<img src="${news.image}" class="card-image" alt="${news.title}">`;
+      } else {
+        // Если картинки нет, ставим серую заглушку
+        imgHtml = `<div style="width:100%; height:200px; background:#eee; display:flex; align-items:center; justify-content:center; color:#888;">Нет фото</div>`;
+      }
+
+      html += `
+        <div class="card" data-category="${news.category}">
+          ${imgHtml}
+          <div class="card-body">
+            <span class="category">${news.category}</span>
+            <h3 class="card-title">${news.title}</h3>
+            <div class="card-meta">
+              <span>${news.author}</span>
+              <span>${date}</span>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  `;
-});
+      `;
+    });
 
-container.innerHTML = html;
-</script>
+    container.innerHTML = html;
+
+    // --- ЛОГИКА ФИЛЬТРОВ (КНОПОК) ---
+    function filterNews(category) {
+      const cards = document.querySelectorAll('.card');
+      const buttons = document.querySelectorAll('.filter-btn');
+
+      // 1. Меняем стиль кнопок (выделяем активную)
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      // 2. Показываем/скрываем карточки
+      cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.classList.add('visible');
+        } else {
+          card.classList.remove('visible');
+        }
+      });
+    }
+  </script>
 </body>
 </html>
