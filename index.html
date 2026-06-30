@@ -1,97 +1,285 @@
-<!-- index.html (Главная страница) -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Без шуток — Главная</title>
+    <title>Без шуток — Все новости</title>
     <style>
-        :root { --bg-color: #121212; --text-color: #ffffff; --accent-color: #ff4757; --card-bg: #1e1e1e; --menu-bg: #2c2c2c; }
+        :root {
+            --bg-color: #121212;
+            --text-color: #ffffff;
+            --accent-color: #ff4757;
+            --card-bg: #1e1e1e;
+            --menu-bg: #2c2c2c;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; z-index: 10; }
-        .logo { font-size: 24px; font-weight: 700; letter-spacing: 1px; }
-        .burger { cursor: pointer; width: 30px; height: 21px; position: relative; -webkit-tap-highlight-color: transparent; outline: none; }
+        
+        /* Шапка */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; z-index: 10; position: relative; }
+        .logo { font-size: 24px; font-weight: 700; letter-spacing: 1px; color: var(--accent-color); }
+        
+        /* Бургер */
+        .burger { cursor: pointer; width: 30px; height: 21px; position: relative; outline: none; -webkit-tap-highlight-color: transparent; }
         .burger span { position: absolute; width: 100%; height: 3px; background-color: var(--text-color); border-radius: 2px; transition: all 0.3s ease; }
-        .burger span:nth-child(1) { top: 0; } .burger span:nth-child(2) { top: 9px; } .burger span:nth-child(3) { top: 18px; }
+        .burger span:nth-child(1) { top: 0; }
+        .burger span:nth-child(2) { top: 9px; }
+        .burger span:nth-child(3) { top: 18px; }
         .burger.active span:nth-child(1) { transform: rotate(45deg); top: 9px; }
         .burger.active span:nth-child(2) { opacity: 0; }
         .burger.active span:nth-child(3) { transform: rotate(-45deg); top: 9px; }
-        .mobile-menu { position: fixed; top: 0; left: -100%; width: 70%; height: 100vh; background-color: var(--menu-bg); padding: 60px 20px; transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 20; display: flex; flex-direction: column; gap: 20px; }
+
+        /* Мобильное меню */
+        .mobile-menu { 
+            position: fixed; top: 0; left: -100%; width: 70%; height: 100vh; 
+            background-color: var(--menu-bg); padding: 60px 20px; 
+            transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+            z-index: 20; display: flex; flex-direction: column; gap: 20px; 
+        }
         .mobile-menu.open { left: 0; }
-        .nav-link { color: var(--text-color); text-decoration: none; font-size: 18px; padding: 10px 0; border-bottom: 1px solid #333; cursor: pointer; -webkit-tap-highlight-color: transparent; outline: none; user-select: none; }
-        .nav-link:hover { color: var(--accent-color); }
+        
+        .nav-link { 
+            color: var(--text-color); text-decoration: none; font-size: 18px; 
+            padding: 10px 0; border-bottom: 1px solid #333; cursor: pointer; 
+            user-select: none; transition: color 0.2s; outline: none;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--accent-color); }
+
         main { flex: 1; padding: 40px; max-width: 1200px; margin: 0 auto; width: 100%; }
+        
+        /* Кнопки фильтрации (для ПК) */
+        .filter-buttons { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        .filter-btn {
+            background: transparent; border: 1px solid #444; color: #aaa; padding: 8px 16px; 
+            cursor: pointer; border-radius: 6px; font-size: 14px;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            border-color: var(--accent-color); color: var(--accent-color); background: rgba(255,71,87,0.1);
+        }
+
+        h2.section-title { margin-bottom: 20px; border-left: 5px solid var(--accent-color); padding-left: 15px; }
+
         .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        .news-card { background-color: var(--card-bg); padding: 20px; border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; cursor: pointer; -webkit-tap-highlight-color: transparent; outline: none; user-select: none; }
+
+        .news-card {
+            background-color: var(--card-bg); padding: 20px; border-radius: 12px;
+            transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
+            cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent;
+        }
         .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
         .card-media { width: 100%; height: 200px; border-radius: 8px; margin-bottom: 15px; object-fit: cover; background-color: #333; }
-        .video-overlay { position: relative; width: 100%; height: 200px; border-radius: 8px; margin-bottom: 15px; overflow: hidden; }
-        .video-overlay video { width: 100%; height: 100%; object-fit: cover; }
-        .video-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 48px; }
         .category-tag { font-size: 12px; color: var(--accent-color); font-weight: bold; text-transform: uppercase; margin-bottom: 10px; display: block; }
         .card-title { font-size: 20px; margin-bottom: 15px; line-height: 1.3; }
         .card-meta { margin-top: auto; display: flex; justify-content: space-between; font-size: 14px; color: #aaa; align-items: flex-end; }
         .author { font-weight: bold; color: var(--text-color); }
+
         .full-content { display: none; margin-top: 15px; font-size: 16px; line-height: 1.6; color: #ddd; }
         .expanded .full-content { display: block; }
         .expanded .card-summary { display: none; }
+
         footer { text-align: center; padding: 40px 20px; border-top: 1px solid #333; margin-top: auto; }
         .copyright { font-size: 18px; font-weight: bold; color: var(--text-color); }
     </style>
 </head>
 <body>
+
     <header>
         <div class="logo">Без шуток</div>
         <div class="burger" id="burger">
-            <span></span><span></span><span></span>
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
     </header>
+
+    <!-- Мобильное меню с якорями (без ссылок на файлы!) -->
     <nav class="mobile-menu" id="mobileMenu">
-        <a href="index.html" class="nav-link">Все</a>
-        <a href="politics.html" class="nav-link">Политика</a>
-        <a href="geopolitics.html" class="nav-link">Геополитика</a>
-        <a href="absurd.html" class="nav-link">Абсурдные законы</a>
-        <a href="regions.html" class="nav-link">Регионы</a>
+        <a href="#all" class="nav-link active">Все новости</a>
+        <a href="#politics" class="nav-link">Политика</a>
+        <a href="#regions" class="nav-link">Регионы</a>
+        <a href="#absurd" class="nav-link">Абсурд</a>
     </nav>
+
     <main>
-        <div class="news-grid" id="newsContainer"></div>
+        <!-- Кнопки для десктопа -->
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterNews('all')">Все</button>
+            <button class="filter-btn" onclick="filterNews('Политика')">Политика</button>
+            <button class="filter-btn" onclick="filterNews('Регионы')">Регионы</button>
+            <button class="filter-btn" onclick="filterNews('Абсурдные законы')">Абсурд</button>
+        </div>
+
+        <h1>Все последние новости</h1>
+
+        <!-- Секция "Все" -->
+        <div id="all">
+            <h2 class="section-title">Все новости подряд</h2>
+            <div class="news-grid" id="grid-all"></div>
+        </div>
+
+        <!-- Секция "Политика" -->
+        <div id="politics">
+            <h2 class="section-title">Политика</h2>
+            <div class="news-grid" id="grid-politics"></div>
+        </div>
+
+        <!-- Секция "Регионы" -->
+        <div id="regions">
+            <h2 class="section-title">Регионы</h2>
+            <div class="news-grid" id="grid-regions"></div>
+        </div>
+
+        <!-- Секция "Абсурд" -->
+        <div id="absurd">
+            <h2 class="section-title">Абсурдные новости</h2>
+            <div class="news-grid" id="grid-absurd"></div>
+        </div>
     </main>
-    <footer><p class="copyright">2026 © «Без шуток»</p></footer>
+
+    <footer>
+        <p class="copyright">2026 © «Без шуток»</p>
+    </footer>
+
     <script>
-        const newsData = [
-            { title: "СРОЧНО: Новый указ подписан", category: "politics", author: "САРМАТ", date: new Date(), image: "https://via.placeholder.com/300x200/ff0000/fff?text=New+News", content: "Сегодня был подписан важный указ. Это главная новость дня." },
-            { title: "Соцвыплаты увеличатся с 1 июля", category: "politics", author: "САРМАТ", date: new Date(Date.now() - 86400000), image: "https://via.placeholder.com/300x200/4a4a4a/fff?text=Payouts", content: "Соцвыплаты увеличатся для лиц с изменившимся жизненным статусом..." },
-            { title: "Саммит в столице", category: "politics", author: "САРМАТ", date: new Date(Date.now() - (86400000 * 2)), image: "https://via.placeholder.com/300x200/5a5a5a/fff?text=Summit", content: "На саммите обсуждались ключевые вопросы международной повестки..." },
-            { title: "Конфликт на границе", category: "geopolitics", author: "САРМАТ", date: new Date(Date.now() - (86400000 * 3)), image: "https://via.placeholder.com/300x200/6a6a6a/fff?text=Border", content: "Ситуация на границе остается напряженной..." },
-            { title: "Фестиваль в регионе", category: "regions", author: "САРМАТ", date: new Date(Date.now() - (86400000 * 4)), image: "https://via.placeholder.com/300x200/7a7a7a/fff?text=Festival", content: "В регионе прошел масштабный фестиваль..." },
-            { title: "Хочешь отдохнуть в Ираке?", category: "absurd", author: "САРМАТ", date: new Date(Date.now() - (86400000 * 5)), image: "https://raw.githubusercontent.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260630_181214.png", content: "Ирак: теперь не только для спецслужб..." },
-            { title: "Новый странный закон", category: "absurd", author: "САРМАТ", date: new Date(Date.now() - (86400000 * 6)), isVideo: true, videoPlaceholder: "https://via.placeholder.com/300x200/8a8a8a/fff?text=Video+Clip", content: "Парламент рассмотрел законопроект..." }
+        const allNews = [
+            {
+                title: "Соцвыплаты увеличатся с 1 июля",
+                category: "Политика",
+                author: "САРМАТ",
+                date: new Date(Date.now() - 86400000),
+                image: "https://via.placeholder.com/300x200/4a4a4a/fff?text=Payouts",
+                content: "Соцвыплаты увеличатся с 1 июля для лиц с изменившимся жизненным статусом, рассказала депутат Стенякина: если в июне человеку впервые присвоили I группу инвалидности, его фиксированная выплата удваивается; также выплаты будут увеличены для пенсионеров, у которых на иждивении появились дети до 18 лет или студенты-очники до 23 лет."
+            },
+            {
+                title: "Ремонт дорог в области",
+                category: "Регионы",
+                author: "САРМАТ",
+                date: new Date(),
+                image: "https://via.placeholder.com/300x200/7a7a7a/fff?text=Roads",
+                content: "В области начался масштабный ремонт дорог. В этом году планируют привести в порядок 150 километров трасс. Особое внимание уделят подъездам к школам и больницам."
+            },
+            {
+                title: "Запрет на тень",
+                category: "Абсурдные законы",
+                author: "САРМАТ",
+                date: new Date(Date.now() - (86400000 * 2)),
+                image: "https://via.placeholder.com/300x200/aaa/fff?text=Shadow",
+                content: "В одном из городов предложили штрафовать за создание тени на муниципальной территории в часы пик. По словам чиновников, тень мешает работе солнечных панелей."
+            },
+            {
+                title: "Новый закон о тишине",
+                category: "Политика",
+                author: "САРМАТ",
+                date: new Date(),
+                image: "https://via.placeholder.com/300x200/5a5a5a/fff?text=Silence",
+                content: "Депутаты предложили ужесточить штрафы за шум после 23:00. Штрафы могут вырасти в 3 раза."
+            }
         ];
-        function formatDate(d) { return d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }); }
-        function render() {
-            const c = document.getElementById('newsContainer');
-            c.innerHTML = '';
-            newsData.forEach((n, i) => {
-                const isExp = JSON.parse(localStorage.getItem(`news_${i}`)) === true;
-                let media = n.isVideo 
-                    ? `<div class="video-overlay"><div class="video-placeholder">▶</div><video src="${n.videoPlaceholder}" muted loop playsinline></video></div>`
-                    : `<img src="${n.image}" alt="${n.title}" class="card-media">`;
-                const card = document.createElement('article');
-                card.className = `news-card${isExp ? ' expanded' : ''}`;
-                card.innerHTML = `${media}<span class="category-tag">${n.category}</span><h3 class="card-title">${n.title}</h3><div class="card-meta"><span class="author">${n.author}</span><span>${formatDate(n.date)}</span></div><div class="card-summary"${isExp ? ' style="display:none"' : ''}><p style="color:#aaa;font-size:14px">Нажмите, чтобы прочитать полную новость</p></div><div class="full-content"${!isExp ? ' style="display:none"' : ''}>${n.content.replace(/\n/g,'<br>')}</div>`;
-                card.onclick = () => {
-                    card.classList.toggle('expanded');
-                    localStorage.setItem(`news_${i}`, card.classList.contains('expanded'));
-                };
-                c.appendChild(card);
+
+        function formatDate(dateObj) {
+            return dateObj.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Функция отрисовки карточек
+        function renderCard(item, index) {
+            const isExpanded = JSON.parse(localStorage.getItem(`news_all_${index}`)) === true;
+            
+            const card = document.createElement('article');
+            card.className = `news-card${isExpanded ? ' expanded' : ''}`;
+            
+            card.innerHTML = `
+                <img src="${item.image}" alt="${item.title}" class="card-media">
+                <span class="category-tag">${item.category}</span>
+                <h3 class="card-title">${item.title}</h3>
+                <div class="card-meta">
+                    <span class="author">${item.author}</span>
+                    <span>${formatDate(item.date)}</span>
+                </div>
+                <div class="card-summary" ${isExpanded ? 'style="display:none;"' : ''}>
+                    <p style="color: #aaa; font-size: 14px;">Нажмите на карточку, чтобы прочитать</p>
+                </div>
+                <div class="full-content" ${!isExpanded ? 'style="display:none;"' : ''}>
+                    ${item.content.replace(/\n/g, '<br>')}
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                card.classList.toggle('expanded');
+                const currentState = card.classList.contains('expanded');
+                localStorage.setItem(`news_all_${index}`, currentState);
+            });
+
+            return card;
+        }
+
+        // Инициализация: раскладываем новости по секциям
+        function init() {
+            allNews.forEach((item, index) => {
+                const card = renderCard(item, index);
+
+                // Раскладываем по разным блокам в зависимости от категории
+                document.getElementById('grid-all').appendChild(card.cloneNode(true));
+                
+                if (item.category === "Политика") {
+                    document.getElementById('grid-politics').appendChild(card.cloneNode(true));
+                }
+                if (item.category === "Регионы") {
+                    document.getElementById('grid-regions').appendChild(card.cloneNode(true));
+                }
+                if (item.category === "Абсурдные законы") {
+                    document.getElementById('grid-absurd').appendChild(card.cloneNode(true));
+                }
             });
         }
-        document.getElementById('burger').onclick = () => {
-            document.getElementById('burger').classList.toggle('active');
-            document.getElementById('mobileMenu').classList.toggle('open');
-        };
-        render();
+
+        // Фильтрация для кнопок (Desktop)
+        function filterNews(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.news-grid').forEach(grid => grid.style.display = 'none');
+            
+            if (category === 'all') {
+                document.getElementById('grid-all').style.display = 'grid';
+                window.scrollTo({ top: document.getElementById('all').offsetTop - 100, behavior: 'smooth' });
+            } else {
+                const idMap = {
+                    'Политика': 'grid-politics',
+                    'Регионы': 'grid-regions',
+                    'Абсурдные законы': 'grid-absurd'
+                };
+                const gridId = idMap[category];
+                if (gridId) {
+                    document.getElementById(gridId).style.display = 'grid';
+                    window.scrollTo({ top: document.getElementById(category === 'Абсурдные законы' ? 'absurd' : category.toLowerCase()).offsetTop - 100, behavior: 'smooth' });
+                }
+            }
+        }
+
+        const burger = document.getElementById('burger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        });
+
+        // Обработка кликов по ссылкам в мобильном меню (якоря)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                burger.classList.remove('active');
+                mobileMenu.classList.remove('open');
+                
+                const targetId = link.getAttribute('href').replace('#', '');
+                const targetElement = document.getElementById(targetId);
+                if(targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        init();
     </script>
 </body>
 </html>
