@@ -401,21 +401,22 @@ if (category === 'all' || card.dataset.category === category) {
       const content = cardElement.querySelector('.card-content');
       const reactionsBlock = cardElement.querySelector('.reactions');
       
+      // Проверяем, открыта ли карточка сейчас
       if (content.classList.contains('expanded')) {
-        // Если карточка открыта — закрываем
-        content.style.maxHeight = null; // Сбрасываем высоту вручную для корректной анимации
+        // Закрываем
+        content.style.maxHeight = null;
         setTimeout(() => {
           content.classList.remove('expanded');
         }, 10);
         reactionsBlock.classList.remove('visible');
       } else {
-        // Если закрыта — открываем
+        // Открываем
         content.classList.add('expanded');
         setTimeout(() => {
           reactionsBlock.classList.add('visible');
         }, 400);
       }
-    }
+                   }
 
     // --- ЛОГИКА СЧЁТЧИКОВ РЕАКЦИЙ ---
     window.handleReaction = function(groupElement, emoji, currentCount) {
