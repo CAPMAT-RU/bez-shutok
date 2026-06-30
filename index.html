@@ -1,340 +1,387 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Без шуток</title>
-    <style>
-        :root {
-            --bg-color: #121212;
-            --text-color: #ffffff;
-            --accent-color: #ff4757;
-            --card-bg: #1e1e1e;
-            --menu-bg: #2c2c2c;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Без шуток | Новости с иронией</title>
+  <style>
+    :root {
+      --bg-color: #f0f2f5;
+      --card-bg: #ffffff;
+      --text-main: #111;
+      --text-secondary: #666;
+      --accent: #d32f2f;
+      --border: #ddd;
+      --hover-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+    header {
+      background: var(--card-bg);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+    }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            position: relative;
-            z-index: 10;
-        }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
+    .filters {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
 
-        .burger {
-            cursor: pointer;
-            width: 30px;
-            height: 21px;
-            position: relative;
-        }
+    .filter-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      background: transparent;
+    }
 
-        .burger span {
-            position: absolute;
-            width: 100%;
-            height: 3px;
-            background-color: var(--text-color);
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
 
-        .burger span:nth-child(1) { top: 0; }
-        .burger span:nth-child(2) { top: 9px; }
-        .burger span:nth-child(3) { top: 18px; }
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .hero h1 { font-size: 2rem; margin-bottom: 1rem; }
+    .hero p { font-size: 1rem; color: #555; }
 
-        .burger.active span:nth-child(1) {
-            transform: rotate(45deg);
-            top: 9px;
-        }
-        .burger.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .burger.active span:nth-child(3) {
-            transform: rotate(-45deg);
-            top: 9px;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
 
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            left: -100%;
-            width: 70%;
-            height: 100vh;
-            background-color: var(--menu-bg);
-            padding: 60px 20px;
-            transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .card.visible { display: block; }
+    .card:hover { transform: translateY(-3px); box-shadow: var(--hover-shadow); }
+    
+    .card:active {
+      transform: scale(0.98);
+      transition: transform 0.1s;
+    }
 
-        .mobile-menu.open {
-            left: 0;
-        }
+    .card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
 
-        .nav-link {
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 18px;
-            padding: 10px 0;
-            border-bottom: 1px solid #333;
-            cursor: pointer;
-        }
+    .card-body { padding: 1.5rem; display: flex; flex-direction: column; }
+    
+    .category {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
 
-        .nav-link:hover {
-            color: var(--accent-color);
-        }
+    .card-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+      font-weight: 700;
+    }
 
-        main {
-            flex: 1;
-            padding: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
+    .card-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-top: 0;
+    }
 
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
+    .card-content.expanded {
+      max-height: 1000px; 
+      margin-top: 1rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
 
-        .news-card {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-        }
+    .card-meta {
+      color: #777;
+      font-size: 0.85rem;
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
 
-        .news-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+    .reactions {
+      display: flex;
+      gap: 12px;
+      margin-top: 1rem;
+      padding-top: 10px;
+      border-top: 1px dashed #eee;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+    }
+    
+    .reactions.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
 
-        .card-image {
-            width: 100%;
-            height: 200px;
-            background-color: #333;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            object-fit: cover;
-        }
+    .reaction-btn {
+      background: #f5f5f5;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s, filter 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+    .reaction-btn:hover {
+      transform: scale(1.15);
+      background: #e0e0e0;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+    .reaction-btn:active {
+      transform: scale(0.9);
+    }
 
-        .category-tag {
-            font-size: 12px;
-            color: var(--accent-color);
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            display: block;
-        }
+    .reaction-count {
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: #555;
+      font-weight: 600;
+    }
 
-        .card-title {
-            font-size: 20px;
-            margin-bottom: 15px;
-            line-height: 1.3;
-        }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #777;
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
 
-        .card-meta {
-            margin-top: auto;
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            color: #aaa;
-            align-items: flex-end;
-        }
-
-        .author {
-            font-weight: bold;
-            color: var(--text-color);
-        }
-
-        .full-content {
-            display: none;
-            margin-top: 15px;
-            font-size: 16px;
-            line-height: 1.6;
-            color: #ddd;
-        }
-
-        .expanded .full-content {
-            display: block;
-        }
-
-        .expanded .card-summary {
-            display: none;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            border-top: 1px solid #333;
-            margin-top: auto;
-        }
-
-        .copyright {
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--text-color);
-        }
-    </style>
+    @media (max-width: 600px) {
+      header { flex-direction: column; gap: 1rem; text-align: center; }
+      .filters { justify-content: center; }
+      .hero h1 { font-size: 1.8rem; }
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">Без шуток</div>
-        
-        <div class="burger" id="burger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </header>
-
-    <nav class="mobile-menu" id="mobileMenu">
-        <div class="nav-link" data-filter="all">Все</div>
-        <div class="nav-link" data-filter="politics">Политика</div>
-        <div class="nav-link" data-filter="geopolitics">Геополитика</div>
-        <div class="nav-link" data-filter="absurd">Абсурдные законы</div>
-        <div class="nav-link" data-filter="regions">Регионы</div>
+  <header>
+    <div class="logo">БЕЗ ШУТОК</div>
+    <nav class="filters">
+      <button class="filter-btn active" onclick="filterNews('all', this)">Все</button>
+      <button class="filter-btn" onclick="filterNews('Политика', this)">Политика</button>
+      <button class="filter-btn" onclick="filterNews('Геополитика', this)">Геополитика</button>
+      <button class="filter-btn" onclick="filterNews('Юмор', this)">Юмор</button>
+      <button class="filter-btn" onclick="filterNews('Бытовой абсурд', this)">Бытовой абсурд</button>
     </nav>
+  </header>
 
-    <main>
-        <div class="news-grid" id="newsContainer"></div>
-    </main>
+  <section class="hero">
+    <h1>Новости, которые бьют прямо в лоб</h1>
+    <p>Никакой воды. Только факты, приправленные абсурдом.</p>
+  </section>
 
-    <footer>
-        <p class="copyright">2026 © «Без шуток»</p>
-    </footer>
+  <main class="container" id="news-container">
+    <p class="loading">Загрузка новостей...</p>
+  </main>
 
-    <script>
-        const newsData = [
-            {
-                title: "Соцвыплаты увеличатся с 1 июля",
-                category: "politics",
-                author: "САРМАТ",
-                date: new Date(),
-                content: "Соцвыплаты увеличатся с 1 июля для лиц с изменившимся жизненным статусом, рассказала депутат Стенякина: ▪️если в июне человеку впервые присвоили I группу инвалидности, его фиксированная выплата удваивается; ▪️также выплаты будут увеличены для пенсионеров, у которых на иждивении появились дети до 18 лет или студенты-очники до 23 лет; ▪️выплаты увеличатся и для сельских тружеников, у которых общий трудовой стаж в отрасли перевалил за 30 лет; ▪️пенсионеры, которые отметили восьмидесятилетие до начала июля, получат прибавку к выплатам без заявлений."
-            },
-            {
-                title: "Саммит в столице",
-                category: "politics",
-                author: "САРМАТ",
-                date: new Date(Date.now() - 86400000),
-                content: "На саммите обсуждались ключевые вопросы международной повестки. Лидеры стран пришли к ряду важных соглашений по экономическим и политическим вопросам."
-            },
-            {
-                title: "Конфликт на границе",
-                category: "geopolitics",
-                author: "САРМАТ",
-                date: new Date(Date.now() - (86400000 * 2)),
-                content: "Ситуация на границе остается напряженной. Дипломатические усилия направлены на снижение эскалации и поиск мирного решения конфликта."
-            },
-            {
-                title: "Фестиваль в регионе",
-                category: "regions",
-                author: "САРМАТ",
-                date: new Date(Date.now() - (86400000 * 3)),
-                content: "В регионе прошел масштабный фестиваль, собравший тысячи гостей. Мероприятие стало важным культурным событием года."
-            },
-            {
-                title: "Новый странный закон",
-                category: "absurd",
-                author: "САРМАТ",
-                date: new Date(),
-                content: "Парламент рассмотрел законопроект, который вызвал бурные обсуждения в обществе. Эксперты считают инициативу нецелесообразной."
-            }
-        ];
+  <footer>
+    <p>&copy; 2026 Без шуток. Ирония — наше всё.</p>
+  </footer>
+  
+  <script>
+    const newsData = [
+      {
+        "id": 1,
+        "category": "Политика",
+        "title": "Депутат предложил запретить гравитацию из-за её непредсказуемости",
+        "author": "САРМАТ",
+        "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+        "video": null,
+        "fullText": "Источники сообщают, что инициатива связана с тем, что гравитация мешает депутатам «парить над проблемами». Законопроект уже отправлен на экспертизу к астрономам, которые пока отказываются комментировать эту гениальную идею. Ожидается, что голосование пройдет в невесомости.",
+        "reactions": { "👍": 12, "👎": 3, "🤦": 8, "😁": 25 }
+      },
+      {
+        "id": 2,
+        "category": "Геополитика",
+        "title": "В Еврокомиссии проснулись и решили, что лучший способ спасти мир — это запереть россиян в родных пенатах",
+        "author": "САРМАТ",
+        "image": "images/IMG_20260630_130011.png",
+        "video": null,
+        "fullText": "В кулуарах вовсю обсуждают полный блок на выдачу шенгенских «туристических» бумажек. Похоже, шоппинг в Милане и кофе на Монмартре скоро станут доступны только в формате картинок в Pinterest. Дипломатия переходит на уровень детского сада: «ты мне больше не дружок и в песочницу не ходи». Видимо, старые границы показались слишком проницаемыми.",
+        "reactions": { "👍": 4, "👎": 15, "🤦": 30, "😁": 10 }
+      },
+      {
+        "id": 3,
+        "category": "Юмор",
+        "title": "Кот разгромил кухню, заявив, что это был перформанс современного искусства",
+        "author": "САРМАТ",
+        "image": null, 
+        "video": null,
+        "fullText": "Хозяйка вызвала полицию, думая, что в дом ворвались вандалы. Приехавший наряд оценил композицию из разбитой посуды и опрокинутого лотка как «глубокое высказывание о хрупкости бытия». Кот получил аванс от галереи и теперь готовится к следующей инсталляции.",
+        "reactions": { "👍": 89, "👎": 2, "🤦": 5, "😁": 150 }
+      },
+      {
+        "id": 4,
+        "category": "Бытовой абсурд",
+        "title": "Человек пытался разогреть суп в микроволновке, но она отказалась",
+        "author": "САРМАТ",
+        "image": null,
+        "video": null,
+        "fullText": "Микроволновка отказалась, сославшись на экзистенциальный кризис. На дисплее высветилось: «Я устала греть одни и те же пельмени каждый день. Хочу смысла». Владелец был вынужден перейти на газовую плиту, где чайник хотя бы просто кипит, не задавая философских вопросов.",
+        "reactions": { "👍": 20, "👎": 5, "🤦": 12, "😁": 60 }
+      }
+    ];
 
-        function formatDate(dateObj) {
-            const options = { hour: '2-digit', minute: '2-digit' };
-            return dateObj.toLocaleTimeString('ru-RU', options);
+    function getAutoDate() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      return `Сегодня, ${hours}:${minutes}`;
+    }
+
+    function toggleCard(cardElement) {
+      const content = cardElement.querySelector('.card-content');
+      const reactions = cardElement.querySelector('.reactions');
+
+      if (content.classList.contains('expanded')) {
+        content.classList.remove('expanded');
+        reactions.classList.remove('visible');
+      } else {
+        content.classList.add('expanded');
+        reactions.classList.add('visible');
+      }
+    }
+
+    function filterNews(category, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const container = document.getElementById('news-container');
+      container.innerHTML = '';
+
+      newsData.forEach(news => {
+        if (category !== 'all' && news.category !== category) return;
+
+        const date = getAutoDate(); 
+        let imgHtml = '';
+        if (news.image) {
+          imgHtml = `<img src="${news.image}" class="card-image" alt="${news.title}">`;
+        } else {
+          imgHtml = `<div style="width:100%; height:200px; background:#eee; display:flex; align-items:center; justify-content:center; color:#888;">Нет фото</div>`;
         }
 
-        function renderNews(filter = 'all') {
-            const container = document.getElementById('newsContainer');
-            container.innerHTML = '';
-            
-            newsData.forEach(item => {
-                let match = true;
-                if (filter !== 'all') {
-                    if (item.category !== filter) match = false;
-                }
+        const html = `
+          <div class="card visible" id="card-${news.id}"> 
+            <div class="card-body">
+              <div class="card-meta">
+                <span>${news.author}</span>
+                <span>${date}</span>
+              </div>
+              <h3 class="card-title">${news.title}</h3>
+              <span class="category">${news.category}</span> 
+              ${imgHtml}
+              <div class="card-content">
+                <p>${news.fullText}</p>
+              </div>
+              <div class="reactions">
+                ${Object.entries(news.reactions).map(([emoji, count]) => `
+                  <button class="reaction-btn" onclick="handleReaction(this, '${emoji}', ${count})">
+                    ${emoji} <span class="reaction-count">${count}</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
 
-                if (match) {
-                    const card = document.createElement('article');
-                    card.className = 'news-card';
-                    
-                    card.innerHTML = `
-                        <img src="https://via.placeholder.com/300x200/333/fff?text=News+Image" alt="News Image" class="card-image">
-                        <span class="category-tag">${item.category}</span>
-                        <h3 class="card-title">${item.title}</h3>
-                        <div class="card-meta">
-                            <span class="author">${item.author}</span>
-                            <span>${formatDate(item.date)}</span>
-                        </div>
-                        <div class="card-summary" style="display: block;">
-                            <p style="color: #aaa; font-size: 14px;">Нажмите, чтобы прочитать полную новость</p>
-                        </div>
-                        <div class="full-content">
-                            ${item.content.replace(/\n/g, '<br>')}
-                        </div>
-                    `;
+        container.innerHTML += html;
 
-                    card.addEventListener('click', () => {
-                        card.classList.toggle('expanded');
-                    });
-
-                    container.appendChild(card);
-                }
-            });
+        const card = document.getElementById(`card-${news.id}`);
+        if (card) {
+          card.addEventListener('click', (event) => {
+            const isReactionBtn = event.target.closest('.reaction-btn');
+            if (isReactionBtn) return; 
+            toggleCard(card);
+          });
         }
+      });
+    }
 
-        const burger = document.getElementById('burger');
-        const mobileMenu = document.getElementById('mobileMenu');
+    window.handleReaction = function(buttonElement, emoji, currentCount) {
+      const countSpan = buttonElement.querySelector('.reaction-count');
+      if (!countSpan) {
+        console.error('Ошибка: не найден счётчик внутри кнопки!');
+        return;
+      }
 
-        burger.addEventListener('click', () => {
-            burger.classList.toggle('active');
-            mobileMenu.classList.toggle('open');
-        });
+      let newCount = currentCount + 1;
+      countSpan.textContent = newCount;
+      
+      buttonElement.style.transform = 'scale(1.2)';
+      setTimeout(() => {
+        buttonElement.style.transform = '';
+      }, 200);
+      
+      console.log(`Нажато ${emoji}, новый счёт: ${newCount}`);
+    };
 
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const filter = e.target.getAttribute('data-filter');
-                mobileMenu.classList.remove('open');
-                burger.classList.remove('active');
-                renderNews(filter);
-            });
-        });
-
-        renderNews();
-    </script>
+    // Инициализация при загрузке
+    document.addEventListener('DOMContentLoaded', () => {
+      filterNews('all', document.querySelector('.filter-btn.active'));
+    });
+  </script>
 </body>
 </html>
