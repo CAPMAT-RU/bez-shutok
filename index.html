@@ -132,15 +132,16 @@
     </footer>
 
     <script>
-        const allNews = [
+        const allNews = [           
              {
                 title: "Очередные озабоченности",
                 category: "Политика",
                 author: "Автор: Дмитрий Мусиенко",
-                image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260630_232249.png" ,
-                content: "В Украину улетел второй транш на беспилотники — 3,9 млрд евро. Общий котел — 90 млрд. Первый куш в 3,2 млрд ушел25 июня. Представитель Еврокомиссии Балаш Уйвари пожаловался на странную проблему: денег дают столько, что Киев не успевает их тратить. По словам чиновника, бумаги оформлены лишь на5 млрд евро. Пока нет контрактов — нет и кэша. Осталось 900 млн, на которые ждут хоть каких-то документов. Игнорировать этот поток — значит тешить себя иллюзиями. Оппоненты активно закупаются, и игра в поддавки тут неуместна. Жесткие симметричные ответы по инфраструктуре или экономике — единственное, что сейчас хоть как-то работает. Зверье понимает только язык последствий. Европа кормит войну, пока бюрократия не поспевает за аппетитами."
-            },
-            {
+                time: "23:45", // Вставьте сюда нужное время
+                image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260630_232249.png",
+                content: "В Украину улетел второй транш на беспилотники — 3,9 млрд евро. Общий котел — 90 млрд. Первый куш в 3,2 млрд ушел 25 июня. Представитель Еврокомиссии Балаш Уйвари пожаловался на странную проблему: денег дают столько, что Киев не успевает их тратить. По словам чиновника, бумаги оформлены лишь на 5 млрд евро. Пока нет контрактов — нет и кэша. Осталось 900 млн, на которые ждут хоть каких-то документов. Игнорировать этот поток — значит тешить себя иллюзиями. Оппоненты активно закупаются, и игра в поддавки тут неуместна. Жесткие симметричные ответы по инфраструктуре или экономике — единственное, что сейчас хоть как-то работает. Зверье понимает только язык последствий. Европа кормит войну, пока бюрократия не поспевает за аппетитами."
+             },             
+             {
                 title: "6 летний малыш погиб от ВСУ",
                 category: "Регионы",
                 author: "Автор: Дмитрий Мусиенко",
@@ -163,24 +164,19 @@
             },           
         ];
 
-        function createCardHTML(item, uniqueId) {
-            return `
-                <article class="news-card" data-id="${uniqueId}">
-                    <img src="${item.image}" alt="${item.title}" class="card-media" onerror="this.src='https://via.placeholder.com/300x200/333/fff?text=Image+Error'">
-                    <span class="category-tag">${item.category}</span>
-                    <h3 class="card-title">${item.title}</h3>
-                    <div class="card-meta">
-                        <span class="author">${item.author}</span>
-                    </div>
-                    <div class="card-summary" style="display: block;">
-                        <p style="color: #aaa; font-size: 14px;">Нажмите на карточку, чтобы прочитать</p>
-                    </div>
-                    <div class="full-content" style="display: none;">
-                        ${item.content.replace(/\n/g, '<br>')}
-                    </div>
-                </article>
-            `;
-        }
+        // Функция создания карточки, чтобы она выводила ваше время:
+function createCardHTML(item, uniqueId) {
+    return `        <article class="news-card" data-id="${uniqueId}">
+            <img src="${item.image}" alt="${item.title}" class="card-media">
+            <span class="category-tag">${item.category}</span>
+            <h3 class="card-title">${item.title}</h3>
+            <div class="card-meta">                <span class="author">${item.author}</span>
+                <span>${item.time || ''}</span> <!-- Здесь отображается время из вашего объекта -->
+            </div>
+            <div class="card-summary"><p style="color: #aaa; font-size: 14px;">Нажмите, чтобы прочитать</p></div>
+            <div class="full-content">${item.content.replace(/\n/g, '<br>')}</div>
+        </article>`;
+}
 
         function init() {
             document.getElementById('grid-all').innerHTML = '';
