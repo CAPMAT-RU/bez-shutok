@@ -372,7 +372,12 @@
       `;
     });
 
-    container.innerHTML = html;
+    container.innerHTML = html;    
+
+    // 👇 ВСТАВЛЯЙ СЮДА 👇
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => card.classList.add('visible'));
+    // 👆-----------------------👆
 
     // --- ЛОГИКА ФИЛЬТРОВ ---
     function filterNews(category, clickedButton) {
