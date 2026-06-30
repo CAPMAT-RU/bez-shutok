@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Без шуток | Новости с иронией</title>
   <style>
-    /* --- СТИЛИ (CSS) --- */
     :root {
       --bg-color: #f0f2f5;
       --card-bg: #ffffff;
@@ -93,7 +92,7 @@
       overflow: hidden;
       box-shadow: 0 4px 6px rgba(0,0,0,0.03);
       transition: transform 0.2s, box-shadow 0.2s;
-      display: none; /* Скрыто по умолчанию */
+      display: none;
       cursor: pointer;
       position: relative;
     }
@@ -101,7 +100,7 @@
     .card.visible { display: block; }
     .card:hover { transform: translateY(-3px); box-shadow: var(--hover-shadow); }
     
-    /* Анимация нажатия (пружинка) */
+    /* Анимация нажатия */
     .card:active {
       transform: scale(0.98);
       transition: transform 0.1s;
@@ -143,7 +142,7 @@
     }
 
     .card-content.expanded {
-      max-height: 1000px; /* Большое значение, чтобы контент влез */
+      max-height: 1000px; /* Достаточно большое значение */
       margin-top: 1rem;
       border-top: 1px solid var(--border);
       padding-top: 1rem;
@@ -158,7 +157,6 @@
       margin-bottom: 0.5rem;
     }
 
-    /* Кнопка "Читать далее" */
     .read-more-btn {
       background: none;
       border: none;
@@ -172,10 +170,10 @@
     }
     .read-more-btn:hover { color: #b71c1c; }
 
-    /* ЭМОДЗИ РЕАКЦИИ */
+    /* ЭМОДЗИ И СЧЁТЧИКИ */
     .reactions {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       margin-top: 1rem;
       padding-top: 10px;
       border-top: 1px dashed #eee;
@@ -191,25 +189,41 @@
       pointer-events: auto;
     }
 
+    .reaction-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+
     .reaction-btn {
       background: #f5f5f5;
       border: none;
       border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      font-size: 1.2rem;
+      width: 40px;
+      height: 40px;
+      font-size: 1.3rem;
       cursor: pointer;
-      transition: transform 0.2s, background 0.2s;
+      transition: transform 0.2s, background 0.2s, filter 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
+      user-select: none;
     }
     .reaction-btn:hover {
-      transform: scale(1.2);
+      transform: scale(1.15);
       background: #e0e0e0;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
     .reaction-btn:active {
       transform: scale(0.9);
+    }
+
+    .reaction-count {
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: #555;
+      font-weight: 600;
     }
 
     footer {
@@ -257,14 +271,14 @@
     // --- ДАННЫЕ (ТВОЯ АДМИНКА) ---
     const newsData = [
       {
-        "id": 1,
+      "id": 1,
         "category": "Политика",
         "title": "Депутат предложил запретить гравитацию из-за её непредсказуемости",
         "author": "САРМАТ",
         "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
         "video": null,
-        // Полный текст новости (то, что будет скрыто)
-        "fullText": "Источники сообщают, что инициатива связана с тем, что гравитация мешает депутатам «парить над проблемами». Законопроект уже отправлен на экспертизу к астрономам, которые пока отказываются комментировать эту гениальную идею. Ожидается, что голосование пройдет в невесомости."
+    "fullText": "Источники сообщают, что инициатива связана с тем, что гравитация мешает депутатам «парить над проблемами». Законопроект уже отправлен на экспертизу к астрономам, которые пока отказываются комментировать эту гениальную идею. Ожидается, что голосование пройдет в невесомости.",
+    "reactions": { "👍": 12, "👎": 3, "🤦": 8, "😁": 25,
       },
       {
         "id": 2,
@@ -273,7 +287,8 @@
         "author": "САРМАТ",
         "image": null,
         "video": null,
-        "fullText": "В кулуарах вовсю обсуждают полный блок на выдачу шенгенских «туристических» бумажек. Похоже, шоппинг в Милане и кофе на Монмартре скоро станут доступны только в формате картинок в Pinterest. Дипломатия переходит на уровень детского сада: «ты мне больше не дружок и в песочницу не ходи». Видимо, старые границы показались слишком проницаемыми."
+        "fullText": "В кулуарах вовсю обсуждают полный блок на выдачу шенгенских «туристических» бумажек. Похоже, шоппинг в Милане и кофе на Монмартре скоро станут доступны только в формате картинок в Pinterest. Дипломатия переходит на уровень детского сада: «ты мне больше не дружок и в песочницу не ходи». Видимо, старые границы показались слишком проницаемыми.",
+        "reactions": { "👍": 4, "👎": 15, "🤦": 30, "😁": 10, "😡": 42 }
       },
       {
         "id": 3,
@@ -282,7 +297,8 @@
         "author": "САРМАТ",
         "image": null, 
         "video": null,
-        "fullText": "Хозяйка вызвала полицию, думая, что в дом ворвались вандалы. Приехавший наряд оценил композицию из разбитой посуды и опрокинутого лотка как «глубокое высказывание о хрупкости бытия». Кот получил аванс от галереи и теперь готовится к следующей инсталляции."
+        "fullText": "Хозяйка вызвала полицию, думая, что в дом ворвались вандалы. Приехавший наряд оценил композицию из разбитой посуды и опрокинутого лотка как «глубокое высказывание о хрупкости бытия». Кот получил аванс от галереи и теперь готовится к следующей инсталляции.",
+        "reactions": { "👍": 89, "👎": 2, "🤦": 5, "😁": 150, "���}
       },
       {
         "id": 4,
@@ -291,7 +307,8 @@
         "author": "САРМАТ",
         "image": null,
         "video": null,
-        "fullText": "Микроволновка отказалась, сославшись на экзистенциальный кризис. На дисплее высветилось: «Я устала греть одни и те же пельмени каждый день. Хочу смысла». Владелец был вынужден перейти на газовую плиту, где чайник хотя бы просто кипит, не задавая философских вопросов."
+        "fullText": "Микроволновка отказалась, сославшись на экзистенциальный кризис. На дисплее высветилось: «Я устала греть одни и те же пельмени каждый день. Хочу смысла». Владелец был вынужден перейти на газовую плиту, где чайник хотя бы просто кипит, не задавая философских вопросов.",
+        "reactions": { "👍": 20, "👎": 5, "🤦": 12, "😁": 60, "���}
       }
     ];
 
@@ -315,7 +332,18 @@
         imgHtml = `<div style="width:100%; height:200px; background:#eee; display:flex; align-items:center; justify-content:center; color:#888;">Нет фото</div>`;
       }
 
-      // Генерируем HTML карточки
+      // Генерируем HTML для кнопок реакций
+      let reactionsHtml = '';
+      Object.keys(news.reactions).forEach(emoji => {
+        const count = news.reactions[emoji];
+        reactionsHtml += `
+          <div class="reaction-group" onclick="handleReaction(this, '${emoji}', ${count})">
+            <button class="reaction-btn">${emoji}</button>
+            <span class="reaction-count" data-count="${count}">${count}</span>
+          </div>
+        `;
+      });
+
       html += `
         <div class="card" data-category="${news.category}" onclick="toggleCard(this)">
           ${imgHtml}
@@ -336,13 +364,9 @@
               <span>${date}</span>
             </div>
 
-            <!-- Блок с эмодзи (скрыт по умолчанию) -->
+            <!-- Блок с эмодзи и счётчиками -->
             <div class="reactions">
-              <button class="reaction-btn" title="Нравится">👍</button>
-              <button class="reaction-btn" title="Не нравится">👎</button>
-              <button class="reaction-btn" title="Что это?">🤦</button>
-              <button class="reaction-btn" title="Смешно">😁</button>
-              <button class="reaction-btn" title="Злость">���ton>
+              ${reactionsHtml}
             </div>
           </div>
         </div>
@@ -364,29 +388,44 @@
           card.classList.add('visible');
         } else {
           card.classList.remove('visible');
-          // Если карточку скрываем, обязательно сворачиваем её обратно
-          card.querySelector('.card-content').classList.remove('expanded');
-          card.querySelector('.reactions').classList.remove('visible');
-        }
+          }
       });
     }
 
-    // --- ЛОГИКА ОТКРЫТИЯ/ЗАКРЫТИЯ (АККОРДЕОН) ---
+    // --- ЛОГИКА РАСКРЫТИЯ КАРТОЧКИ (АККОРДЕОН) ---
     function toggleCard(cardElement) {
-      // Находим элементы внутри текущей карточки
       const content = cardElement.querySelector('.card-content');
-      const reactions = cardElement.querySelector('.reactions');
+      const reactionsBlock = cardElement.querySelector('.reactions');
       
-      // Если контент уже раскрыт - сворачиваем
-      if (content.classList.contains('expanded')) {
-        content.classList.remove('expanded');
-        reactions.classList.remove('visible');
-      } else {
-        // Иначе раскрываем
-        content.classList.add('expanded');
-        reactions.classList.add('visible');
-      }
+      // Переключаем класс expanded для анимации высоты
+      content.classList.toggle('expanded');
+      
+      // Плавно показываем реакции только когда карточка открыта
+      setTimeout(() => {
+        reactionsBlock.classList.toggle('visible');
+      }, 400); // 400мс = время анимации max-height в CSS
     }
+
+    // --- ЛОГИКА СЧЁТЧИКОВ РЕАКЦИЙ ---
+    window.handleReaction = function(groupElement, emoji, currentCount) {
+      // Находим span со счётчиком внутри этой группы
+      const countSpan = groupElement.querySelector('.reaction-count');
+      
+      // Увеличиваем значение
+      let newCount = currentCount + 1;
+      
+      // Обновляем текст
+      countSpan.textContent = newCount;
+      
+      // Опционально: визуальная обратная связь (лёгкая пульсация кнопки)
+      const btn = groupElement.querySelector('.reaction-btn');
+      btn.style.transform = 'scale(1.2)';
+      setTimeout(() => {
+        btn.style.transform = '';
+      }, 200);
+      
+      console.log(`Нажато ${emoji}, новый счёт: ${newCount}`);
+    };
   </script>
 </body>
 </html>
