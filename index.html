@@ -1,405 +1,97 @@
+<!-- index.html (Главная страница) -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Без шуток</title>
+    <title>Без шуток — Главная</title>
     <style>
-        :root {
-            --bg-color: #121212;
-            --text-color: #ffffff;
-            --accent-color: #ff4757;
-            --card-bg: #1e1e1e;
-            --menu-bg: #2c2c2c;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .burger {
-            cursor: pointer;
-            width: 30px;
-            height: 21px;
-            position: relative;
-            /* Убираем стандартное выделение при тапе/клике */
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
-        }
-
-        .burger span {
-            position: absolute;
-            width: 100%;
-            height: 3px;
-            background-color: var(--text-color);
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-
-        .burger span:nth-child(1) { top: 0; }
-        .burger span:nth-child(2) { top: 9px; }
-        .burger span:nth-child(3) { top: 18px; }
-
-        .burger.active span:nth-child(1) {
-            transform: rotate(45deg);
-            top: 9px;
-        }
-        .burger.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .burger.active span:nth-child(3) {
-            transform: rotate(-45deg);
-            top: 9px;
-        }
-
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            left: -100%;
-            width: 70%;
-            height: 100vh;
-            background-color: var(--menu-bg);
-            padding: 60px 20px;
-            transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .mobile-menu.open {
-            left: 0;
-        }
-
-        .nav-link {
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 18px;
-            padding: 10px 0;
-            border-bottom: 1px solid #333;
-            cursor: pointer;
-            /* Убираем любые выделения при клике/фокусе */
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
-            user-select: none;
-        }
-
-        .nav-link:hover {
-            color: var(--accent-color);
-        }
-
-        main {
-            flex: 1;
-            padding: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .news-card {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            /* Убираем стандартное выделение при клике */
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
-            user-select: none;
-        }
-
-        .news-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .card-media {
-            width: 100%;
-            height: 200px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            object-fit: cover;
-            background-color: #333;
-        }
-
-        .video-overlay {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            overflow: hidden;
-        }
-
-        .video-overlay video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .video-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 48px;
-        }
-
-        .category-tag {
-            font-size: 12px;
-            color: var(--accent-color);
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .card-title {
-            font-size: 20px;
-            margin-bottom: 15px;
-            line-height: 1.3;
-        }
-
-        .card-meta {
-            margin-top: auto;
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            color: #aaa;
-            align-items: flex-end;
-        }
-
-        .author {
-            font-weight: bold;
-            color: var(--text-color);
-        }
-
-        .full-content {
-            display: none;
-            margin-top: 15px;
-            font-size: 16px;
-            line-height: 1.6;
-            color: #ddd;
-        }
-
-        .expanded .full-content {
-            display: block;
-        }
-
-        .expanded .card-summary {
-            display: none;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            border-top: 1px solid #333;
-            margin-top: auto;
-        }
-
-        .copyright {
-            font-size: 18px;
-            font-weight: bold;
-            color: var(--text-color);
-        }
+        :root { --bg-color: #121212; --text-color: #ffffff; --accent-color: #ff4757; --card-bg: #1e1e1e; --menu-bg: #2c2c2c; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; z-index: 10; }
+        .logo { font-size: 24px; font-weight: 700; letter-spacing: 1px; }
+        .burger { cursor: pointer; width: 30px; height: 21px; position: relative; -webkit-tap-highlight-color: transparent; outline: none; }
+        .burger span { position: absolute; width: 100%; height: 3px; background-color: var(--text-color); border-radius: 2px; transition: all 0.3s ease; }
+        .burger span:nth-child(1) { top: 0; } .burger span:nth-child(2) { top: 9px; } .burger span:nth-child(3) { top: 18px; }
+        .burger.active span:nth-child(1) { transform: rotate(45deg); top: 9px; }
+        .burger.active span:nth-child(2) { opacity: 0; }
+        .burger.active span:nth-child(3) { transform: rotate(-45deg); top: 9px; }
+        .mobile-menu { position: fixed; top: 0; left: -100%; width: 70%; height: 100vh; background-color: var(--menu-bg); padding: 60px 20px; transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 20; display: flex; flex-direction: column; gap: 20px; }
+        .mobile-menu.open { left: 0; }
+        .nav-link { color: var(--text-color); text-decoration: none; font-size: 18px; padding: 10px 0; border-bottom: 1px solid #333; cursor: pointer; -webkit-tap-highlight-color: transparent; outline: none; user-select: none; }
+        .nav-link:hover { color: var(--accent-color); }
+        main { flex: 1; padding: 40px; max-width: 1200px; margin: 0 auto; width: 100%; }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        .news-card { background-color: var(--card-bg); padding: 20px; border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; cursor: pointer; -webkit-tap-highlight-color: transparent; outline: none; user-select: none; }
+        .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card-media { width: 100%; height: 200px; border-radius: 8px; margin-bottom: 15px; object-fit: cover; background-color: #333; }
+        .video-overlay { position: relative; width: 100%; height: 200px; border-radius: 8px; margin-bottom: 15px; overflow: hidden; }
+        .video-overlay video { width: 100%; height: 100%; object-fit: cover; }
+        .video-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 48px; }
+        .category-tag { font-size: 12px; color: var(--accent-color); font-weight: bold; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .card-title { font-size: 20px; margin-bottom: 15px; line-height: 1.3; }
+        .card-meta { margin-top: auto; display: flex; justify-content: space-between; font-size: 14px; color: #aaa; align-items: flex-end; }
+        .author { font-weight: bold; color: var(--text-color); }
+        .full-content { display: none; margin-top: 15px; font-size: 16px; line-height: 1.6; color: #ddd; }
+        .expanded .full-content { display: block; }
+        .expanded .card-summary { display: none; }
+        footer { text-align: center; padding: 40px 20px; border-top: 1px solid #333; margin-top: auto; }
+        .copyright { font-size: 18px; font-weight: bold; color: var(--text-color); }
     </style>
 </head>
 <body>
-
     <header>
         <div class="logo">Без шуток</div>
-        
         <div class="burger" id="burger">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </div>
     </header>
-
     <nav class="mobile-menu" id="mobileMenu">
-        <div class="nav-link" data-filter="all">Все</div>
-        <div class="nav-link" data-filter="politics">Политика</div>
-        <div class="nav-link" data-filter="geopolitics">Геополитика</div>
-        <div class="nav-link" data-filter="absurd">Абсурдные законы</div>
-        <div class="nav-link" data-filter="regions">Регионы</div>
+        <a href="index.html" class="nav-link">Все</a>
+        <a href="politics.html" class="nav-link">Политика</a>
+        <a href="geopolitics.html" class="nav-link">Геополитика</a>
+        <a href="absurd.html" class="nav-link">Абсурдные законы</a>
+        <a href="regions.html" class="nav-link">Регионы</a>
     </nav>
-
     <main>
         <div class="news-grid" id="newsContainer"></div>
     </main>
-
-    <footer>
-        <p class="copyright">2026 © «Без шуток»</p>
-    </footer>
-
+    <footer><p class="copyright">2026 © «Без шуток»</p></footer>
     <script>
         const newsData = [
-            {
-                title: "Соцвыплаты увеличатся с 1 июля",
-                category: "politics",
-                author: "САРМАТ",
-                date: new Date(),
-                image: "https://via.placeholder.com/300x200/4a4a4a/fff?text=Payouts",
-                content: "Соцвыплаты увеличатся с 1 июля для лиц с изменившимся жизненным статусом, рассказала депутат Стенякина: ▪️если в июне человеку впервые присвоили I группу инвалидности, его фиксированная выплата удваивается; ▪️также выплаты будут увеличены для пенсионеров, у которых на иждивении появились дети до 18 лет или студенты-очники до 23 лет; ▪️выплаты увеличатся и для сельских тружеников, у которых общий трудовой стаж в отрасли перевалил за 30 лет; ▪️пенсионеры, которые отметили восьмидесятилетие до начала июля, получат прибавку к выплатам без заявлений."
-            },
-            {
-                title: "Саммит в столице",
-                category: "politics",
-                author: "САРМАТ",
-                date: new Date(Date.now() - 86400000),
-                image: "https://via.placeholder.com/300x200/5a5a5a/fff?text=Summit",
-                content: "На саммите обсуждались ключевые вопросы международной повестки. Лидеры стран пришли к ряду важных соглашений по экономическим и политическим вопросам."
-            },
-            {
-                title: "Конфликт на границе",
-                category: "geopolitics",
-                author: "САРМАТ",
-                date: new Date(Date.now() - (86400000 * 2)),
-                image: "https://via.placeholder.com/300x200/6a6a6a/fff?text=Border",
-                content: "Ситуация на границе остается напряженной. Дипломатические усилия направлены на снижение эскалации и поиск мирного решения конфликта."
-            },
-            {
-                title: "Фестиваль в регионе",
-                category: "regions",
-                author: "САРМАТ",
-                date: new Date(Date.now() - (86400000 * 3)),
-                image: "https://via.placeholder.com/300x200/7a7a7a/fff?text=Festival",
-                content: "В регионе прошел масштабный фестиваль, собравший тысячи гостей. Мероприятие стало важным культурным событием года."
-            },
-            {
-                title: "Хочешь отдохнуть в Ираке?",
-                category: "absurd",
-                author: "САРМАТ",
-                date: new Date(),
-                image: "https://raw.githubusercontent.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260630_181214.png",
-                content: "Ирак: теперь не только для спецслужб, но и для отпускников. Собираетесь в отпуск? А как насчет Ирака? Да‑да, вы не ослышались! Ирак решил welcomed и готов принимать российских туристов. Посол в Москве с улыбкой утверждает, что там «абсолютно безопасно». Прямо как на диване у бабушки, только с камнями и пыльными дорогами. Наверное, просто на обратном пути вам не придется поднимать тревожные флаги — вспомните, как это прекрасно: спать под звуки «где вы взяли эти шары?». Так что, если хотите в опережение загар в Ираке, пакуйте чемоданы!"
-            },
-            {
-                title: "Новый странный закон",
-                category: "absurd",
-                author: "САРМАТ",
-                date: new Date(),
-                isVideo: true,
-                videoPlaceholder: "https://via.placeholder.com/300x200/8a8a8a/fff?text=Video+Clip",
-                content: "Парламент рассмотрел законопроект, который вызвал бурные обсуждения в обществе. Эксперты считают инициативу нецелесообразной."
-            }
+            { title: "СРОЧНО: Новый указ подписан", category: "politics", author: "САРМАТ", date: new Date(), image: "https://via.placeholder.com/300x200/ff0000/fff?text=New+News", content: "Сегодня был подписан важный указ. Это главная новость дня." },
+            { title: "Соцвыплаты увеличатся с 1 июля", category: "politics", author: "САРМАТ", date: new Date(Date.now() - 86400000), image: "https://via.placeholder.com/300x200/4a4a4a/fff?text=Payouts", content: "Соцвыплаты увеличатся для лиц с изменившимся жизненным статусом..." },
+            { title: "Саммит в столице", category: "politics", author: "САРМАТ", date: new Date(Date.now() - (86400000 * 2)), image: "https://via.placeholder.com/300x200/5a5a5a/fff?text=Summit", content: "На саммите обсуждались ключевые вопросы международной повестки..." },
+            { title: "Конфликт на границе", category: "geopolitics", author: "САРМАТ", date: new Date(Date.now() - (86400000 * 3)), image: "https://via.placeholder.com/300x200/6a6a6a/fff?text=Border", content: "Ситуация на границе остается напряженной..." },
+            { title: "Фестиваль в регионе", category: "regions", author: "САРМАТ", date: new Date(Date.now() - (86400000 * 4)), image: "https://via.placeholder.com/300x200/7a7a7a/fff?text=Festival", content: "В регионе прошел масштабный фестиваль..." },
+            { title: "Хочешь отдохнуть в Ираке?", category: "absurd", author: "САРМАТ", date: new Date(Date.now() - (86400000 * 5)), image: "https://raw.githubusercontent.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260630_181214.png", content: "Ирак: теперь не только для спецслужб..." },
+            { title: "Новый странный закон", category: "absurd", author: "САРМАТ", date: new Date(Date.now() - (86400000 * 6)), isVideo: true, videoPlaceholder: "https://via.placeholder.com/300x200/8a8a8a/fff?text=Video+Clip", content: "Парламент рассмотрел законопроект..." }
         ];
-
-        function formatDate(dateObj) {
-            const options = { hour: '2-digit', minute: '2-digit' };
-            return dateObj.toLocaleTimeString('ru-RU', options);
-        }
-
-        function renderNews(filter = 'all') {
-            const container = document.getElementById('newsContainer');
-            container.innerHTML = '';
-            
-            newsData.forEach(item => {
-                let match = true;
-                if (filter !== 'all') {
-                    if (item.category !== filter) match = false;
-                }
-
-                if (match) {
-                    const card = document.createElement('article');
-                    card.className = 'news-card';
-                    
-                    let mediaBlock = '';
-                    if (item.isVideo) {
-                        mediaBlock = `
-                            <div class="video-overlay">
-                                <div class="video-placeholder">▶</div>
-                                <video src="${item.videoPlaceholder}" muted loop playsinline></video>
-                            </div>
-                        `;
-                    } else {
-                        mediaBlock = `<img src="${item.image}" alt="${item.title}" class="card-media">`;
-                    }
-
-                    card.innerHTML = `
-                        ${mediaBlock}
-                        <span class="category-tag">${item.category}</span>
-                        <h3 class="card-title">${item.title}</h3>
-                        <div class="card-meta">
-                            <span class="author">${item.author}</span>
-                            <span>${formatDate(item.date)}</span>
-                        </div>
-                        <div class="card-summary" style="display: block;">
-                            <p style="color: #aaa; font-size: 14px;">Нажмите, чтобы прочитать полную новость</p>
-                        </div>
-                        <div class="full-content">
-                            ${item.content.replace(/\n/g, '<br>')}
-                        </div>
-                    `;
-
-                    card.addEventListener('click', () => {
-                        card.classList.toggle('expanded');
-                    });
-
-                    container.appendChild(card);
-                }
+        function formatDate(d) { return d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }); }
+        function render() {
+            const c = document.getElementById('newsContainer');
+            c.innerHTML = '';
+            newsData.forEach((n, i) => {
+                const isExp = JSON.parse(localStorage.getItem(`news_${i}`)) === true;
+                let media = n.isVideo 
+                    ? `<div class="video-overlay"><div class="video-placeholder">▶</div><video src="${n.videoPlaceholder}" muted loop playsinline></video></div>`
+                    : `<img src="${n.image}" alt="${n.title}" class="card-media">`;
+                const card = document.createElement('article');
+                card.className = `news-card${isExp ? ' expanded' : ''}`;
+                card.innerHTML = `${media}<span class="category-tag">${n.category}</span><h3 class="card-title">${n.title}</h3><div class="card-meta"><span class="author">${n.author}</span><span>${formatDate(n.date)}</span></div><div class="card-summary"${isExp ? ' style="display:none"' : ''}><p style="color:#aaa;font-size:14px">Нажмите, чтобы прочитать полную новость</p></div><div class="full-content"${!isExp ? ' style="display:none"' : ''}>${n.content.replace(/\n/g,'<br>')}</div>`;
+                card.onclick = () => {
+                    card.classList.toggle('expanded');
+                    localStorage.setItem(`news_${i}`, card.classList.contains('expanded'));
+                };
+                c.appendChild(card);
             });
         }
-
-        const burger = document.getElementById('burger');
-        const mobileMenu = document.getElementById('mobileMenu');
-
-        burger.addEventListener('click', () => {
-            burger.classList.toggle('active');
-            mobileMenu.classList.toggle('open');
-        });
-
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const filter = e.target.getAttribute('data-filter');
-                mobileMenu.classList.remove('open');
-                burger.classList.remove('active');
-                renderNews(filter);
-            });
-        });
-
-        renderNews();
+        document.getElementById('burger').onclick = () => {
+            document.getElementById('burger').classList.toggle('active');
+            document.getElementById('mobileMenu').classList.toggle('open');
+        };
+        render();
     </script>
 </body>
 </html>
