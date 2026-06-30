@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -172,10 +173,8 @@
         }
 
         function createCardHTML(item, uniqueId) {
-            const isExpanded = JSON.parse(localStorage.getItem(`news_${uniqueId}`)) === true;
-            
             return `
-                <article class="news-card${isExpanded ? ' expanded' : ''}" data-id="${uniqueId}">
+                <article class="news-card" data-id="${uniqueId}">
                     <img src="${item.image}" alt="${item.title}" class="card-media" onerror="this.src='https://via.placeholder.com/300x200/333/fff?text=Image+Error'">
                     <span class="category-tag">${item.category}</span>
                     <h3 class="card-title">${item.title}</h3>
@@ -183,10 +182,10 @@
                         <span class="author">${item.author}</span>
                         <span>${formatDate(item.date)}</span>
                     </div>
-                    <div class="card-summary" ${isExpanded ? 'style="display:none;"' : ''}>
+                    <div class="card-summary" style="display: block;">
                         <p style="color: #aaa; font-size: 14px;">Нажмите на карточку, чтобы прочитать</p>
                     </div>
-                    <div class="full-content" ${!isExpanded ? 'style="display:none;"' : ''}>
+                    <div class="full-content" style="display: none;">
                         ${item.content.replace(/\n/g, '<br>')}
                     </div>
                 </article>
@@ -222,6 +221,15 @@
                     const uniqueId = card.getAttribute('data-id');
                     const currentState = card.classList.contains('expanded');
                     localStorage.setItem(`news_${uniqueId}`, currentState);
+                    const cardSummary = card.querySelector('.card-summary');
+                    const fullContent = card.querySelector('.full-content');
+                    if (currentState) {
+                        cardSummary.style.display = 'none';
+                        fullContent.style.display = 'block';
+                    } else {
+                        cardSummary.style.display = 'block';
+                        fullContent.style.display = 'none';
+                    }
                 });
             });
         }
