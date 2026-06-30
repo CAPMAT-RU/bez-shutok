@@ -187,13 +187,6 @@
       pointer-events: auto;
     }
 
-    .reaction-group {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-    }
-
     .reaction-btn {
       background: #f5f5f5;
       border: none;
@@ -383,48 +376,29 @@
       }
     });
 
-    // --- ЛОГИКА РАСКРЫТИЯ КАРТОЧКИ (АККОРДЕОН) ---
-    function toggleCard(cardElement) {
-      const content = cardElement.querySelector('.card-content');
-      const reactionsBlock = cardElement.querySelector('.reactions');
+    // --- ЛОГИКА СЧЁТЧИКОВ РЕАКЦИЙ (ИСПРАВЛЕННАЯ) ---
+    window.handleReaction = function(buttonElement, emoji, currentCount) {
+      // buttonElement — это и есть та самая кнопка, на которую ты кликнул (переданный 'this')
       
-      // Проверяем, открыта ли карточка сейчас
-      if (content.classList.contains('expanded')) {
-        // Закрываем
-        content.style.maxHeight = null;
-        setTimeout(() => {
-          content.classList.remove('expanded');
-        }, 10);
-        reactionsBlock.classList.remove('visible');
-      } else {
-        // Открываем
-        content.classList.add('expanded');
-        setTimeout(() => {
-          reactionsBlock.classList.add('visible');
-        }, 400);
+      // Ищем span со счётчиком ВНУТРИ этой кнопки
+      const countSpan = buttonElement.querySelector('.reaction-count');
+      
+      if (!countSpan) {
+        console.error('Ошибка: не найден счётчик внутри кнопки!');
+        return;
       }
-                   }
 
-    // --- ЛОГИКА СЧЁТЧИКОВ РЕАКЦИЙ ---
-    window.handleReaction = function(groupElement, emoji, currentCount) {
-      // Находим span со счётчиком внутри этой группы
-      const countSpan = groupElement.querySelector('.reaction-count');
-      
-      // Увеличиваем значение
       let newCount = currentCount + 1;
-      
-      // Обновляем текст
       countSpan.textContent = newCount;
       
-      // Опционально: визуальная обратная связь (лёгкая пульсация кнопки)
-      const btn = groupElement.querySelector('.reaction-btn');
-      btn.style.transform = 'scale(1.2)';
+      // Пульсация: используем сразу ту кнопку, которую передали
+      buttonElement.style.transform = 'scale(1.2)';
       setTimeout(() => {
-        btn.style.transform = '';
+        buttonElement.style.transform = '';
       }, 200);
       
       console.log(`Нажато ${emoji}, новый счёт: ${newCount}`);
-     };
+    };
   </script>
 </body>
 </html>
