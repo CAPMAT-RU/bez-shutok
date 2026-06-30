@@ -1,186 +1,236 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Без шуток | Новости с иронией</title>
-  <style>
-    /* --- СТИЛИ (CSS) --- */
-    :root {
-      --bg-color: #f0f2f5;
-      --card-bg: #ffffff;
-      --text-main: #111;
-      --accent: #d32f2f; /* Строгий красный */
-      --border: #ddd;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Без шуток | Новости с иронией</title>
+<style>
+/* --- СТИЛИ (CSS) --- */
+:root {
+--bg-color: #f0f2f5;
+--card-bg: #ffffff;
+--text-main: #111;
+--text-secondary: #666;
+--accent: #d32f2f;
+--border: #ddd;
+--hover-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background-color: var(--bg-color);
+color: var(--text-main);
+line-height: 1.6;
+}
+a { text-decoration: none; color: inherit; }
+header {
+background: var(--card-bg);
+padding: 1rem 2rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
+box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+position: sticky;
+top: 0;
+z-index: 100;
+flex-wrap: wrap;
+}
+.logo {
+font-size: 1.5rem;
+font-weight: 800;
+color: var(--accent);
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+.filters {
+display: flex;
+gap: 15px;
+flex-wrap: wrap;
+}
+.filter-btn {
+padding: 8px 16px;
+border: 1px solid var(--border);
+border-radius: 20px;
+cursor: pointer;
+font-size: 0.9rem;
+transition: all 0.3s;
+background: transparent;
+}
+.filter-btn:hover, .filter-btn.active {
+background: var(--accent);
+color: white;
+border-color: var(--accent);
+}
+.hero {
+text-align: center;
+padding: 3rem 1rem;
+max-width: 800px;
+margin: 0 auto;
+}
+.hero h1 { font-size: 2rem; margin-bottom: 1rem; }
+.hero p { font-size: 1rem; color: #555; }
+.container {
+max-width: 1200px;
+margin: 2rem auto;
+padding: 0 1rem;
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 2rem;
+}
+/* КАРТОЧКА */
+.card {
+background: var(--card-bg);
+border-radius: 12px;
+overflow: hidden;
+box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+transition: transform 0.2s, box-shadow 0.2s;
+display: none;
+cursor: pointer;
+position: relative;
+}
+.card.visible { display: block; }
+.card:hover { transform: translateY(-3px); box-shadow: var(--hover-shadow); }
+/* Анимация нажатия */
+.card:active {
+transform: scale(0.98);
+transition: transform 0.1s;
+}
+.card-image {
+width: 100%;
+height: 200px;
+object-fit: cover;
+display: block;
+}
+.card-body { padding: 1.5rem; display: flex; flex-direction: column; }
+.category {
+font-size: 0.75rem;
+text-transform: uppercase;
+color: var(--accent);
+font-weight: bold;
+margin-bottom: 0.5rem;
+display: block;
+}
+.card-title {
+font-size: 1.2rem;
+margin-bottom: 0.5rem;
+line-height: 1.4;
+font-weight: 700;
+}
+/* Скрытый контент */
+.card-content {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.4s ease-out;
+font-size: 0.95rem;
+color: var(--text-secondary);
+margin-top: 0;
+}
+.card-content.expanded {
+max-height: 1000px; /* Достаточно большое число */
+margin-top: 1rem;
+border-top: 1px solid var(--border);
+padding-top: 1rem;
+}
+.card-meta {
+color: #777;
+font-size: 0.85rem;
+margin-top: auto;
+display: flex;
+justify-content: space-between;
+margin-bottom: 0.5rem;
+}
+/* Кнопка "Читать далее" */
+.read-more-btn {
+background: none;
+border: none;
+color: var(--accent);
+font-weight: bold;
+cursor: pointer;
+padding: 0;
+margin-top: 0.5rem;
+font-size: 0.9rem;
+text-decoration: underline;
+}
+.read-more-btn:hover { color: #b71c1c; }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      line-height: 1.6;
-    }
-    a { text-decoration: none; color: inherit; }
-    ul { list-style: none; }
+/* Эмодзи реакции */
+.reactions {
+display: flex;
+gap: 10px;
+margin-top: 1rem;
+padding-top: 10px;
+border-top: 1px dashed #eee;
+opacity: 0;
+transform: translateY(10px);
+transition: all 0.3s ease;
+pointer-events: none; /* Чтобы нельзя было нажать, пока скрыто */
+}
+.reactions.visible {
+opacity: 1;
+transform: translateY(0);
+pointer-events: auto;
+}
+.reaction-btn {
+background: #f5f5f5;
+border: none;
+border-radius: 50%;
+width: 36px;
+height: 36px;
+font-size: 1.2rem;
+cursor: pointer;
+transition: transform 0.2s, background 0.2s;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.reaction-btn:hover {
+transform: scale(1.2);
+background: #e0e0e0;
+}
+.reaction-btn:active {
+transform: scale(0.9);
+}
 
-    /* ШАПКА И МЕНЮ-ФИЛЬТРЫ */
-    header {
-      background: var(--card-bg);
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      flex-wrap: wrap; /* Чтобы на телефоне переносилось */
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .filters {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .filter-btn {
-      padding: 8px 16px;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.3s;
-      background: transparent;
-    }
-
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--accent);
-      color: white;
-      border-color: var(--accent);
-    }
-
-    /* ГЛАВНЫЙ ЭКРАН */
-    .hero {
-      text-align: center;
-      padding: 3rem 1rem;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .hero h1 { font-size: 2rem; margin-bottom: 1rem; }
-    .hero p { font-size: 1rem; color: #555; }
-
-    /* СЕТКА НОВОСТЕЙ */
-    .container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-
-    /* КАРТОЧКА */
-    .card {
-      background: var(--card-bg);
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.03);
-      transition: transform 0.2s;
-      display: none; /* Скрываем по умолчанию, показываем через JS */
-    }
-    
-    .card.visible { display: block; } /* Класс для показа */
-
-    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
-
-    .card-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
-
-    .card-body { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
-    .category {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-    .card-title {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      line-height: 1.4;
-    }
-    .card-meta {
-      color: #777;
-      font-size: 0.85rem;
-      margin-top: auto;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: #777;
-      border-top: 1px solid var(--border);
-      margin-top: 3rem;
-    }
-
-    @media (max-width: 600px) {
-      header { flex-direction: column; gap: 1rem; text-align: center; }
-      .filters { justify-content: center; }
-      .hero h1 { font-size: 1.8rem; }
-    }
-  </style>
+footer {
+text-align: center;
+padding: 2rem;
+color: #777;
+border-top: 1px solid var(--border);
+margin-top: 3rem;
+}
+@media (max-width: 600px) {
+header { flex-direction: column; gap: 1rem; text-align: center; }
+.filters { justify-content: center; }
+.hero h1 { font-size: 1.8rem; }
+}
+</style>
 </head>
 <body>
-
-  <!-- ШАПКА С ФИЛЬТРАМИ -->
-  <header>
-    <div class="logo">БЕЗ ШУТОК</div>
-    <nav class="filters">
-      <!-- Кнопки будут генерироваться JS, но оставим одну для красоты -->
-      <button class="filter-btn active" onclick="filterNews('all')">Все</button>
-      <button class="filter-btn" onclick="filterNews('Политика')">Политика</button>
-      <button class="filter-btn" onclick="filterNews('Геополитика')">Геополитика</button>
-      <button class="filter-btn" onclick="filterNews('Юмор')">Юмор</button>
-      <button class="filter-btn" onclick="filterNews('Бытовой абсурд')">Бытовой абсурд</button>
-    </nav>
-  </header>
-
-  <!-- ГЛАВНЫЙ БЛОК -->
-  <section class="hero">
-    <h1>Новости, которые бьют прямо в лоб</h1>
-    <p>Никакой воды. Только факты, приправленные абсурдом.</p>
-  </section>
-
-  <!-- ЛЕНТА НОВОСТЕЙ -->
-  <main class="container" id="news-container">
-    <!-- Сюда JS вставит карточки -->
-    <p class="loading">Загрузка новостей...</p>
-  </main>
-
-  <footer>
-    <p>&copy; 2026 ©Без шуток. Ирония — наше всё.</p>
-  </footer>
-
-  <script>
-    // --- ДАННЫЕ (ТВОЯ АДМИНКА) ---
-    const newsData = [
-      {
-        "id": 1,
+<header>
+<div class="logo">БЕЗ ШУТОК</div>
+<nav class="filters">
+<button class="filter-btn active" onclick="filterNews('all', this)">Все</button>
+<button class="filter-btn" onclick="filterNews('Политика', this)">Политика</button>
+<button class="filter-btn" onclick="filterNews('Геополитика', this)">Геополитика</button>
+<button class="filter-btn" onclick="filterNews('Юмор', this)">Юмор</button>
+<button class="filter-btn" onclick="filterNews('Бытовой абсурд', this)">Бытовой абсурд</button>
+</nav>
+</header>
+<section class="hero">
+<h1>Новости, которые бьют прямо в лоб</h1>
+<p>Никакой воды. Только факты, приправленные абсурдом.</p>
+</section>
+<main class="container" id="news-container">
+<p class="loading">Загрузка новостей...</p>
+</main>
+<footer>
+<p>&copy; 2026 Без шуток. Ирония — наше всё.</p>
+</footer>
+<script>
+// --- ДАННЫЕ (ТВОЯ АДМИНКА) ---
+const newsData = [
+{
+"id": 1,
         "category": "Политика",
         "title": "Депутат предложил запретить гравитацию из-за её непредсказуемости",
         "author": "САРМАТ",
