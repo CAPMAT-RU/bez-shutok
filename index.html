@@ -265,9 +265,10 @@
   <footer>
     <p>&copy; 2026 Без шуток. Ирония — наше всё.</p>
   </footer>
+  
 
 <script>
-    // --- ДАННЫЕ (ИСПРАВЛЕНО: синтаксис JSON) ---
+    // --- ГЕНЕРАЦИЯ КАРТОЧЕК ---
     const newsData = [
   {
     "id": 1,
@@ -343,58 +344,55 @@
         `;
       });
 
-      html += `
-        <div class="card" data-category="${news.category}" onclick="toggleCard(this)">
-          ${imgHtml}
-          <div class="card-body">
-            <span class="category">${news.category}</span>
-            <h3 class="card-title">${news.title}</h3>
-            
-            <!-- Скрытый текст -->
-            <div class="card-content">
-              ${news.fullText}
-            </div>
+      // 👇 ВСТАВЛЯТЬ ЭТОТ КОД ВМЕСТО УДАЛЁННОГО 👇
+    const html = `
+      <div class="card" id="card-${news.id}">
+        <div class="card-header">
+          <h3>${news.title}</h3>
+          <span class="category-badge">${news.category}</span>
+        </div>
 
-            <!-- Кнопка развернуть -->
-            <button class="read-more-btn" type="button" onclick="event.stopPropagation(); toggleCard(this.closest('.card'))">Читать далее &rarr;</button>
+        ${imgHtml}
 
-            <div class="card-meta">
-              <span>${news.author}</span>
-              <span>${date}</span>
-            </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span>${news.author}</span>
+            <span>${date}</span>
+          </div>
 
-            <!-- Блок с эмодзи и счётчиками -->
-            <div class="reactions">
-              ${reactionsHtml}
-            </div>
+          <!-- Скрытый текст -->
+          <div class="card-content">
+            <p>${news.fullText}</p>
+          </div>
+
+          <!-- Блок реакций (автоматический, с правильным классом) -->
+          <div class="reactions">
+            ${Object.entries(news.reactions).map(([emoji, count]) => `
+              <button class="reaction-btn" onclick="handleReaction(this, '${emoji}', ${count})">
+                ${emoji} <span class="reaction-count">${count}</span>
+              </button>
+            `).join('')}
           </div>
         </div>
-      `;
-    });
+      </div>
+    `;
 
-    container.innerHTML = html;    
+    container.innerHTML += html;
 
-    // 👇 ВСТАВЛЯЙ СЮДА 👇
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => card.classList.add('visible'));
-    // 👆-----------------------👆
-
-    // --- ЛОГИКА ФИЛЬТРОВ ---
-    function filterNews(category, clickedButton) {
-      const cards = document.querySelectorAll('.card');
-      const buttons = document.querySelectorAll('.filter-btn');
-
-      buttons.forEach(btn => btn.classList.remove('active'));
-      if(clickedButton) clickedButton.classList.add('active');
-
-      cards.forEach(card => {
-if (category === 'all' || card.dataset.category === category) {
-          card.classList.add('visible');
-        } else {
-          card.classList.remove('visible');
+    // 👇 ЭТОТ БЛОК ТОЖЕ ОБЯЗАТЕЛЬНО ВСТАВИТЬ СЮДА (сразу после container.innerHTML) 👇
+    const card = document.getElementById(`card-${news.id}`);
+    
+    if (card) {
+      card.addEventListener('click', (event) => {
+        const isReactionBtn = event.target.closest('.reaction-btn');
+        if (isReactionBtn) {
+          return; // Если клик по реакции — карточка НЕ сворачивается
         }
+        toggleCard(card); // Если клик в другом месте — открываем/закрываем
       });
     }
+    // 👆---------------------------------------------------------------👆
+  });
 
     // --- ЛОГИКА РАСКРЫТИЯ КАРТОЧКИ (АККОРДЕОН) ---
     function toggleCard(cardElement) {
@@ -438,6 +436,19 @@ if (category === 'all' || card.dataset.category === category) {
       
       console.log(`Нажато ${emoji}, новый счёт: ${newCount}`);
     };
+document.addEventListener('click', (event) => {
+  // 1. Проверяем: клик был по кнопке реакции?
+  const reactionBtn = event.target.closest('.reaction-btn');
+  
+  if (reactionBtn) {
+    // Если да — ничего не делаем. Пусть функция toggleCard (если она есть) сработает,
+    // но мы принудительно остановим любые другие действия, которые могли бы закрыть карточку.
+    return; 
+  }
+
+  // 2. (Опционально) Если у тебя карточка закрывается из-за всплытия события,
+  // этот код выше уже должен это предотвратить.
+});
   </script>
 </body>
 </html>
