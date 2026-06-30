@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -225,9 +226,7 @@
     </nav>
 
     <main>
-        <div class="news-grid" id="newsContainer">
-            <!-- News cards injected by JS -->
-        </div>
+        <div class="news-grid" id="newsContainer"></div>
     </main>
 
     <footer>
@@ -238,31 +237,38 @@
         const newsData = [
             {
                 title: "Соцвыплаты увеличатся с 1 июля",
-                category: "Политика",
+                category: "politics",
                 author: "САРМАТ",
                 date: new Date(),
                 content: "Соцвыплаты увеличатся с 1 июля для лиц с изменившимся жизненным статусом, рассказала депутат Стенякина: ▪️если в июне человеку впервые присвоили I группу инвалидности, его фиксированная выплата удваивается; ▪️также выплаты будут увеличены для пенсионеров, у которых на иждивении появились дети до 18 лет или студенты-очники до 23 лет; ▪️выплаты увеличатся и для сельских тружеников, у которых общий трудовой стаж в отрасли перевалил за 30 лет; ▪️пенсионеры, которые отметили восьмидесятилетие до начала июля, получат прибавку к выплатам без заявлений."
             },
             {
                 title: "Саммит в столице",
-                category: "Политика",
+                category: "politics",
                 author: "САРМАТ",
                 date: new Date(Date.now() - 86400000),
                 content: "На саммите обсуждались ключевые вопросы международной повестки. Лидеры стран пришли к ряду важных соглашений по экономическим и политическим вопросам."
             },
             {
                 title: "Конфликт на границе",
-                category: "Геополитика",
+                category: "geopolitics",
                 author: "САРМАТ",
                 date: new Date(Date.now() - (86400000 * 2)),
                 content: "Ситуация на границе остается напряженной. Дипломатические усилия направлены на снижение эскалации и поиск мирного решения конфликта."
             },
             {
                 title: "Фестиваль в регионе",
-                category: "Регионы",
+                category: "regions",
                 author: "САРМАТ",
                 date: new Date(Date.now() - (86400000 * 3)),
                 content: "В регионе прошел масштабный фестиваль, собравший тысячи гостей. Мероприятие стало важным культурным событием года."
+            },
+            {
+                title: "Новый странный закон",
+                category: "absurd",
+                author: "САРМАТ",
+                date: new Date(),
+                content: "Парламент рассмотрел законопроект, который вызвал бурные обсуждения в обществе. Эксперты считают инициативу нецелесообразной."
             }
         ];
 
@@ -276,35 +282,37 @@
             container.innerHTML = '';
             
             newsData.forEach(item => {
+                let match = true;
                 if (filter !== 'all') {
-                    const itemCatKey = item.category.toLowerCase().replace(/\s+/g, '');
-                    if (itemCatKey !== filter) return;
+                    if (item.category !== filter) match = false;
                 }
 
-                const card = document.createElement('article');
-                card.className = 'news-card';
-                
-                card.innerHTML = `
-                    <img src="https://via.placeholder.com/300x200/333/fff?text=News+Image" alt="News Image" class="card-image">
-                    <span class="category-tag">${item.category}</span>
-                    <h3 class="card-title">${item.title}</h3>
-                    <div class="card-meta">
-                        <span class="author">${item.author}</span>
-                        <span>${formatDate(item.date)}</span>
-                    </div>
-                    <div class="card-summary" style="display: block;">
-                        <p style="color: #aaa; font-size: 14px;">Нажмите, чтобы прочитать полную новость</p>
-                    </div>
-                    <div class="full-content">
-                        ${item.content.replace(/\n/g, '<br>')}
-                    </div>
-                `;
+                if (match) {
+                    const card = document.createElement('article');
+                    card.className = 'news-card';
+                    
+                    card.innerHTML = `
+                        <img src="https://via.placeholder.com/300x200/333/fff?text=News+Image" alt="News Image" class="card-image">
+                        <span class="category-tag">${item.category}</span>
+                        <h3 class="card-title">${item.title}</h3>
+                        <div class="card-meta">
+                            <span class="author">${item.author}</span>
+                            <span>${formatDate(item.date)}</span>
+                        </div>
+                        <div class="card-summary" style="display: block;">
+                            <p style="color: #aaa; font-size: 14px;">Нажмите, чтобы прочитать полную новость</p>
+                        </div>
+                        <div class="full-content">
+                            ${item.content.replace(/\n/g, '<br>')}
+                        </div>
+                    `;
 
-                card.addEventListener('click', () => {
-                    card.classList.toggle('expanded');
-                });
+                    card.addEventListener('click', () => {
+                        card.classList.toggle('expanded');
+                    });
 
-                container.appendChild(card);
+                    container.appendChild(card);
+                }
             });
         }
 
