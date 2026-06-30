@@ -281,7 +281,7 @@
         "image": null,
         "video": null,
         "fullText": "Микроволновка отказалась, сославшись на экзистенциальный кризис. На дисплее высветилось: «Я устала греть одни и те же пельмени каждый день. Хочу смысла». Владелец был вынужден перейти на газовую плиту, где чайник хотя бы просто кипит, не задавая философских вопросов.",
-        "reactions": { "👍": 20, "👎": 5, "🤦": 12, "😁": 60, "���}
+        "reactions": { "👍": 20, "👎": 5, "🤦": 12, "😁": 60 }
       }
     ];
 
@@ -379,7 +379,9 @@
     };
 
     // Инициализация при загрузке
-    filterNews('all', document.querySelector('.filter-btn.active'));
+    document.addEventListener('DOMContentLoaded', () => {
+      filterNews('all', document.querySelector('.filter-btn.active'));
+    });
   </script>
 </body>
 </html>
