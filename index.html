@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -135,6 +134,14 @@
     <script>
         const allNews = [
         {
+                title: "Завяжите пояса",
+                category: "Регионы",
+                author: "САРМАТ",
+                date: new Date(Date.now() - 8640000),
+                image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260630_222121_662.jpg",
+                content: "В Госдуме, кажется, решили, что пора распрощаться с миром, где бензин льется рекой: зампред комитета по экономике Станислав Наумов заявил, что иллюзиям о прежних временах конец, россиянам нужно учиться «саморегулировать потребление» по инструкции IKEA, а высокие ценники на топливо — это новая реальность и долгий карнавальный сезон, так что впереди — новый курс на водительскую жизнь!"
+            },
+            {
                 title: "Очередная чушь от Милонова",
                 category: "Политика",
                 author: "САРМАТ",
@@ -142,38 +149,6 @@
                 image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/i%20(1).jpeg",
                 content: "В Госдуме решили, что GTA 6 — это не просто игра, а настоящий сгусток американского зла. Депутат Виталий Милонов взял на себя роль главного моралистa и заявил, что в новой части всё про насилие и хулиганство, что, конечно, соответствует некоему «американскому образу жизни». Но не переживайте, наши геймеры, по словам Милонова, вас это не касается. «Нормальные люди» же вряд ли потянутся за персонажами из игры - ведь кто, как не депутат, знает, что в Америке дела обстоят иначе? В общем, пока мы тут такую ерунду обсуждаем, игроки в мире безумия развлекаются."
             },
-            {
-                title: "Топливный кризис в России",
-                category: "Политика",
-                author: "САРМАТ",
-                date: new Date(Date.now() - 86400000),
-                image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260630_194726.png",
-                content: "Россия решила, что импорт топлива — это как раз тот ход, который поможет успокоить рынок. Дмитрий Песков говорит, что с другими странами уже ведутся переговоры, и если ценовые рамки устроят, то бензин полетит к нам, как горячие пирожки. А вот вице-премьер Александр Новак тоже не дремлет: хочет уменьшить обязательные продажи бензина на бирже с 15% до 10%. А еще на повестке дня стоит запрет на экспорт дизеля — прям как в сказке, где всё под контролем. Так что, держите уши востро — в мире топлива назревают интересные перемены!"
-            },
-            {
-                title: "Ремонт дорог в области",
-                category: "Регионы",
-                author: "САРМАТ",
-                date: new Date(),
-                image: "https://via.placeholder.com/300x200/7a7a7a/fff?text=Roads",
-                content: "В области начался масштабный ремонт дорог. В этом году планируют привести в порядок 150 километров трасс. Особое внимание уделят подъездам к школам и больницам."
-            },
-            {
-                title: "Запрет на тень",
-                category: "Абсурдные законы",
-                author: "САРМАТ",
-                date: new Date(Date.now() - (86400000 * 2)),
-                image: "https://via.placeholder.com/300x200/aaa/fff?text=Shadow",
-                content: "В одном из городов предложили штрафовать за создание тени на муниципальной территории в часы пик. По словам чиновников, тень мешает работе солнечных панелей."
-            },
-            {
-                title: "Новый закон о тишине",
-                category: "Политика",
-                author: "САРМАТ",
-                date: new Date(),
-                image: "https://via.placeholder.com/300x200/5a5a5a/fff?text=Silence",
-                content: "Депутаты предложили ужесточить штрафы за шум после 23:00. Штрафы могут вырасти в 3 раза."
-            }
         ];
 
         function formatDate(dateObj) {
@@ -201,22 +176,27 @@
         }
 
         function init() {
+            document.getElementById('grid-all').innerHTML = '';
+            document.getElementById('grid-politics').innerHTML = '';
+            document.getElementById('grid-regions').innerHTML = '';
+            document.getElementById('grid-absurd').innerHTML = '';
+
             allNews.forEach((item, index) => {
                 const idAll = `all_${index}`;
                 const idPolitics = `politics_${index}`;
                 const idRegions = `regions_${index}`;
                 const idAbsurd = `absurd_${index}`;
 
-                document.getElementById('grid-all').innerHTML += createCardHTML(item, idAll);
+                document.getElementById('grid-all').insertAdjacentHTML('beforeend', createCardHTML(item, idAll));
                 
                 if (item.category === "Политика") {
-                    document.getElementById('grid-politics').innerHTML += createCardHTML(item, idPolitics);
+                    document.getElementById('grid-politics').insertAdjacentHTML('beforeend', createCardHTML(item, idPolitics));
                 }
                 if (item.category === "Регионы") {
-                    document.getElementById('grid-regions').innerHTML += createCardHTML(item, idRegions);
+                    document.getElementById('grid-regions').insertAdjacentHTML('beforeend', createCardHTML(item, idRegions));
                 }
                 if (item.category === "Абсурдные законы") {
-                    document.getElementById('grid-absurd').innerHTML += createCardHTML(item, idAbsurd);
+                    document.getElementById('grid-absurd').insertAdjacentHTML('beforeend', createCardHTML(item, idAbsurd));
                 }
             });
             attachClickHandlers();
@@ -269,8 +249,7 @@
                 }
             }
         }
-
-        const burger = document.getElementById('burger');
+       
         const mobileMenu = document.getElementById('mobileMenu');
 
         burger.addEventListener('click', () => {
