@@ -1,9 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="yandex-verification" content="1bcc32a86990c202" />
     <title>Без шуток — Все новости</title>
     <style>
         :root {
@@ -14,81 +14,34 @@
             --menu-bg: #2c2c2c;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body {
-            background-color: var(--bg-color); color: var(--text-color);
-            min-height: 100vh; display: flex;
-            flex-direction: column; }
-        header { position: fixed; top: 0; left: 0; width: 100%;
-            height: 60px; background-color: var(--bg-color);display: flex; justify-content: space-between; align-items: center;
-            padding: 0 15px; z-index: 1000;
-            border-bottom: 1px solid #333;
-        }
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px; }
-        .header-right {
-            display: flex;
-            align-items: center; gap: 20px;
-        }
-        .site-logo-img {
-            height: 35px;
-            width: auto;
-        }
+        body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
+        header { position: fixed; top: 0; left: 0; width: 100%; height: 60px; background-color: var(--bg-color); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; z-index: 1000; border-bottom: 1px solid #333; }
+        .header-left, .header-right { display: flex; align-items: center; gap: 20px; }
+        .site-logo-img { height: 35px; width: auto; }
         .logo { font-size: 24px; font-weight: 700; letter-spacing: 1px; color: var(--accent-color); }
-        #siteSearch {
-            background: #222;
-            border: 1px solid #444;
-            color: #fff;
-            padding: 6px 15px;
-            border-radius: 20px;
-            outline: none;
-            font-size: 14px;
-            transition: border-color 0.3s;
-            width: 180px; }
-        #siteSearch:focus {
-            border-color: var(--accent-color);}
-        .burger { cursor: pointer; width: 30px;
-            height: 21px; position: relative;
-            /* Убраны outline и focus для удаления подсветки */
-        }
-        .burger span { position: absolute;
-            width: 100%; height: 3px;
-            background-color: var(--text-color);border-radius: 2px;
-            transition: all 0.3s ease; }
+        #siteSearch { background: #222; border: 1px solid #444; color: #fff; padding: 6px 15px; border-radius: 20px; outline: none; font-size: 14px; transition: border-color 0.3s; width: 180px; }
+        #siteSearch:focus { border-color: var(--accent-color); }
+        
+        .burger { cursor: pointer; width: 30px; height: 21px; position: relative; }
+        .burger span { position: absolute; width: 100%; height: 3px; background-color: var(--text-color); border-radius: 2px; transition: all 0.3s ease; }
         .burger span:nth-child(1) { top: 0; }
         .burger span:nth-child(2) { top: 9px; }
         .burger span:nth-child(3) { top: 18px; }
         .burger.active span:nth-child(1) { transform: rotate(45deg); top: 9px; }
         .burger.active span:nth-child(2) { opacity: 0; }
         .burger.active span:nth-child(3) { transform: rotate(-45deg); top: 9px; }
-        .mobile-menu { position: fixed; top: 0;
-            left: -100%; width: 70%; height: 100vh; background-color: var(--menu-bg); padding: 40px 20px; transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            z-index:1100;
-            display: flex; flex-direction: column; gap: 15px;
-        }
+
+        .mobile-menu { position: fixed; top: 0; left: -100%; width: 70%; height: 100vh; background-color: var(--menu-bg); padding: 40px 20px; transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index:1100; display: flex; flex-direction: column; gap: 15px; }
         .mobile-menu.open { left: 0; }
-        .nav-link { color: var(--text-color); text-decoration: none;
-            font-size: 18px;
-            padding: 12px 0;
-            border-bottom: 1px solid #444; cursor: pointer;
-            user-select: none; transition: color 0.2s; outline: none;
-        }
+        .nav-link { color: var(--text-color); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid #444; cursor: pointer; user-select: none; transition: color 0.2s; }
         .nav-link:hover { color: var(--accent-color); }
-        main { margin-top: 60px; padding: 40px;
-            max-width: 1200px; margin-left: auto;margin-right: auto; width: 100%; flex:1; }
+
+        main { margin-top: 60px; padding: 40px; max-width: 1200px; margin-left: auto; margin-right: auto; width: 100%; flex:1; }
         h2.section-title { margin-bottom: 20px; border-left: 5px solid var(--accent-color); padding-left: 15px; }
         .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom:50px; }
-        .news-card {
-            background-color: var(--card-bg); padding: 20px; border-radius: 12px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex; flex-direction: column;
-            cursor: pointer;
-            outline: none;
-        }
-        .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255, 71,87, 0.5);
-        }
-        .card-media { width: 100%; border-radius:8px; margin-bottom: 15px; }
+        .news-card { background-color: var(--card-bg); padding: 20px; border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; cursor: pointer; }
+        .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255, 71,87, 0.5); }
+        .card-media { width: 100%; border-radius:8px; margin-bottom: 15px; object-fit: cover; }
         .category-tag { color: var(--accent-color); font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
         .card-title { font-size: 20px; margin-bottom: 15px; line-height: 1.3; }
         .author { font-weight: bold; color: var(--text-color); }
@@ -98,40 +51,24 @@
         .full-content { display: none; margin-top: 15px; font-size: 16px; line-height: 1.6; color: #ddd; }
         .expanded .full-content { display: block; }
         .expanded .card-summary { display: none; }
-        footer { padding: 40px 20px; border-top: 1px solid #333; margin-top: auto;
-            text-align: center;
-        }
+        footer { padding: 40px 20px; border-top: 1px solid #333; margin-top: auto; text-align: center; }
         .copyright { font-size: 14px; color: #666; }
-        .news-card:focus, .news-card:active,
-        .nav-link:focus, .nav-link:active,
-        a:focus, a:active {
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .search-highlight {
-            outline: 2px solid var(--accent-color); box-shadow: 0 0 20px var(--accent-color);
-        }
-        /* Убраны стили подсветки для .burger при фокусе и нажатии */
-        .burger:focus, .burger:active {
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
     </style>
 </head>
 <body>
     <header>
         <div class="header-left">
-            <img src="https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/Logotip.png" class="site-logo-img">
+            <img src="https://via.placeholder.com/40/ff4757/000000?text=LOGO" class="site-logo-img" alt="Logo">
             <div class="logo">Без шуток</div>
         </div>
         <div class="header-right">
             <input type="text" id="siteSearch" placeholder="Поиск по сайту...">
-            <div class="burger" id="burger"><span></span>
-                <span></span>
-                <span></span>
+            <div class="burger" id="burger">
+                <span></span><span></span><span></span>
             </div>
         </div>
     </header>
+
     <nav class="mobile-menu" id="mobileMenu">
         <a href="#all" class="nav-link">Все новости</a>
         <a href="#politics" class="nav-link">Политика</a>
@@ -141,125 +78,55 @@
         <a href="#geopolitics" class="nav-link">Геополитика</a>
         <a href="#sport" class="nav-link">Спорт</a>
     </nav>
+
     <main>
-        <div id="all">
-            <h2 class="section-title">Все новости подряд</h2>
-            <div class="news-grid" id="grid-all"></div>
-        </div>
-        <div id="politics">
-            <h2 class="section-title">Политика</h2>
-            <div class="news-grid" id="grid-politics"></div>
-        </div>
-        <div id="regions">
-            <h2 class="section-title">Регионы</h2>
-            <div class="news-grid" id="grid-regions"></div> 
-        </div>
-        <div id="absurd">
-            <h2 class="section-title">Абсурдные новости</h2>
-            <div class="news-grid" id="grid-absurd"></div> 
-        </div>
-        <div id="crime">
-            <h2 class="section-title">Криминал</h2>
-            <div class="news-grid" id="grid-crime"></div>
-        </div>
-        <div id="geopolitics">
-            <h2 class="section-title">Геополитика</h2>
-            <div class="news-grid" id="grid-geopolitics"></div>
-        </div>
-        <div id="sport">
-            <h2 class="section-title">Спорт</h2>
-            <div class="news-grid" id="grid-sport"></div>
-        </div>
+        <div id="all"><h2 class="section-title">Все новости подряд</h2><div class="news-grid" id="grid-all"></div></div>
+        <div id="politics"><h2 class="section-title">Политика</h2><div class="news-grid" id="grid-politics"></div></div>
+        <div id="regions"><h2 class="section-title">Регионы</h2><div class="news-grid" id="grid-regions"></div></div> 
+        <div id="absurd"><h2 class="section-title">Абсурдные новости</h2><div class="news-grid" id="grid-absurd"></div></div> 
+        <div id="crime"><h2 class="section-title">Криминал</h2><div class="news-grid" id="grid-crime"></div></div>
+        <div id="geopolitics"><h2 class="section-title">Геополитика</h2><div class="news-grid" id="grid-geopolitics"></div></div>
+        <div id="sport"><h2 class="section-title">Спорт</h2><div class="news-grid" id="grid-sport"></div></div>
     </main>
+
     <footer>
         <p class="copyright">2026 © «Без шуток»</p>
     </footer>
-    <script>
-        const allNews = [
-            {
-                title: "Греф советует гулять",
-                category: "Абсурд",
-                author: "Автор: Дмитрий Мусиенко",
-                date: "01.07.2026",
-                time: "Время публикации",
-                image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260701_214651.webp",
-                content: "Герман Греф решил, что будущее — это слишком сложно, и предложил нам просто жить моментом. Банкир прямо заявил: экономику перегрели, вернее, переохладили, и нынешние ставки ей противопоказаны. Горизонт планирования схлопнулся в точку, так что наслаждайтесь, пока дают. Удивительно слышать такие советы от человека, чьи близкие, кажется, выбрали для наслаждения жизнью совсем другие широты. Вспомнить хотя бы дочь, которая ради участия в турнире по конному спорту в Европе отреклась от страны декларацией. Видимо, у них «жить сегодняшним днем» — это семейная традиция с европейским уклоном. Призывать к гедонизму, пока страна дышит порохом — это даже не цинизм, а какой-то высший пилотаж оторванности от реальности. <p>Удобно предлагать пир во время чумы, когда у тебя в кармане билет в один конец до стабильности, а не до ближайшего укрытия.</p>"
-            },
-            {
-                title: "Британский парламент стал самым гейским",
-                category: "Геополитика",
-                author: "Автор: Дмитрий Мусиенко",
-                date: "01.07.2026",
-                time: "18:54",
-                image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260701_184928.webp",
-                content: "Премьер-министр Британии Кир Стармер решил подвести промежуточные итоги своей работы и сделал неожиданный комплимент законодателям. По версии главы правительства, местный парламент — самый гейский во всем мире, причем в истории таких показателей еще не было. Стармер открыто гордится этим достижением, считая его чуть ли не главным достоянием своего кабинета. Политик уверен, что ни в одной другой стране законодательная власть не может похвастаться такой концентрацией радужных настроений. Видимо, пока другие лидеры хвастаются ростом ВВП или успехами в экономике, Стармер меряет эффективность страны по совершенно иным лекалам. Кажется, теперь мы точно знаем, какой именно «прогресс» в Британии идет семимильными шагами. <br> *ЛГБТ — запрещенная в России организация"
-            },                   
-            {
-                title: "«Не разводите сырость»",
-                category: "Абсурд",
-                author: "Автор: Дмитрий Мусиенко",
-                date: "01.07.2026",
-                time: "13:29",
-                image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260701_132524.webp",
-                content: "Валентина Матвиенко выписала всем рецепт успокоительного и запретила разводить сырость. Сенатор Кресс попытался заявить о «катастрофе» с горючим для полей, мол, всё встанет и многолетний труд страны пойдет прахом. Спикер Совфеда панику пресекла на корню. Она посоветовала не «охать-ахать», а просто искать выходы. По её словам, всем пора опереться на «твердое плечо государства». Какие именно меры принимаются — большой секрет, чтобы не сболтнуть лишнего. Виноват в кризисе «понятно кто», причем пакостит этот некто специально. Но Матвиенко уверена: прорвемся. Судя по всему, в этом сезоне комбайны будут заправлять не соляркой, а чистой верой в начальство."
-            },
-            {
-                title: "Вежливость стоит нам важных мостов",
-                category: "Регионы",
-                author: "Автор: Дмитрий Мусиенко",
-                date: "01.07.2026",
-                time: "11:55",
-                image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260701_115128.webp",
-                content: "Логистика в ДНР получила очередной болезненный удар. На трассе Донецк — Мариуполь приземлилось что-то тяжелое: то ли баллистика, то ли беспилотники. Глава округа Константин Зинченко деликатно назвал дыру в дороге «частичным обрушением». Правда, судя по кадрам с места, восстанавливать этот «нюанс» придется до скончания веков. Ирония ситуации зашкаливает. Нам четыре года втирают про негуманность и бесполезность атак на мосты через Днепр. Пока мы упражняемся в благородстве и высчитываем целесообразность, противник плевать хотел на сантименты. Они методично выносят пути на Крым и теперь добрались до артерий ДНР. Пока наши политики жонглируют терминами о гуманности, враг просто методично перерезает нам вены. Видимо, чья-то излишняя вежливость обходится нам слишком дорого."
-            },
-            {
-                title: "Зумеры не хотят переработку",
-                category: "Регионы",
-                author: "Автор: Дмитрий Мусиенко",
-                date: "01.07.2026",
-                time: "2:32",
-                image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/347805610063085.jpeg",
-                content: "Максим Решетников озадачен: зумеры наотрез отказываются пахать сверхурочно. Министр экономического развития констатирует факт — молодежь не желает «вовлекаться» и менять жизнь на дедлайны. У новых сотрудников странные приоритеты: вместо добровольного рабства им подавай спорт, свободные вечера и адекватный микроклимат в офисе. Работодатели в шоке, что на вакансии с переработками больше не выстраиваются очереди из энтузиастов. Видимо, кто-то забыл предупредить ребят, что смысл жизни должен заключаться в горящих отчетах, а не в походах в зал."
-            },
-            {
-                title: "Очередная чушь от Милонова",
-                category: "Политика",
-                author: "Дмитрий Мусиенко",
-                date: "30.06.2026",
-                time: "22:45",
-                image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/i%20(1).jpeg",
-                content: "В Госдуме решили, что GTA 6 — это не просто игра, а настоящий сгусток американского зла. Депутат Виталий Милонов взял на себя роль главного моралистa и заявил, что в новой части всё про насилие и хулиганство, что, конечно, соответствует некоему «американскому образу жизни». Но не переживайте, наши геймеры, по словам Милонова, вас это не касается. «Нормальные люди» же вряд ли потянутся за персонажами из игры - ведь кто, как не депутат, знает, что в Америке дела обстоят иначе? В общем, пока мы тут такую ерунду обсуждаем, игроки в мире безумия развлекаются."
-            },
-            {
-                title: "Топливный кризис в России",
-                category: "Политика",
-                author: "Автор: Дмитрий Мусиенко",
-                date: "30.06.2026",
-                time: "17:16",
-                image: "https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260630_194726.png",
-                content: "Россия решила, что импорт топлива — это как раз тот ход, который поможет успокоить рынок. Дмитрий Песков говорит, что с другими странами уже ведутся переговоры, и если ценовые рамки устроят, то бензин полетит к нам, как горячие пирожки. А вот вице-премьер Александр Новак тоже не дремлет: хочет уменьшить обязательные продажи бензина на бирже с 15% до 10%. А еще на повестке дня стоит запрет на экспорт дизеля — прям как в сказке, где всё под контролем. Так что, держите уши востро — в мире топлива назревают интересные перемены!"
-            }
-        ];
 
-        function createCardHTML(item, index) {
+    <script>
+        async function loadNews() {
+            try {
+                const response = await fetch('news.json');
+                if (!response.ok) throw new Error('Файл не найден');
+                const data = await response.json();
+                renderGrids(data);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('grid-all').innerHTML = '<p style="color:red; text-align:center;">Ошибка! Проверь, лежит ли файл news.json рядом с index.html и запущен ли сервер (Live Server).</p>';
+            }
+        }
+
+        function createCardHTML(item) {
             return `
-                <article class="news-card" data-index="${index}">
-                    <img src="${item.image}" alt="${item.title}" class="card-media" onerror="this.src='https://via.placeholder.com/300x200/333/fff?text=Image+Error'">
+                <article class="news-card">
+                    <img src="${item.image || 'https://via.placeholder.com/300x200/333/fff?text=No+Image'}" 
+                         alt="${item.title}" class="card-media">
                     <span class="category-tag">${item.category}</span>
                     <h3 class="card-title">${item.title}</h3>
                     <div class="card-meta">
                         <span class="author">${item.author}</span>
                         <div style="display: flex; align-items: center; gap: 8px;">
-                            <span class="publish-date">${item.date || ''}</span><span class="publish-time">${item.time || ''}</span>
+                            <span class="publish-date">${item.date || ''}</span>
+                            <span class="publish-time">${item.time || ''}</span>
                         </div>
                     </div>
                     <div class="card-summary"><p style="color: #aaa; font-size: 14px; margin-top:10px;">Нажмите, чтобы прочитать</p></div>
-                    <div class="full-content">${item.content.replace(/\n/g, '<br>')}</div>
+                    <div class="full-content">${item.content ? item.content.replace(/\n/g, '<br>') : 'Нет текста'}</div>
                 </article>
             `;
         }
 
-        function renderGrids() {
+        function renderGrids(newsData) {
             const grids = {
                 all: document.getElementById('grid-all'),
                 politics: document.getElementById('grid-politics'),
@@ -269,71 +136,41 @@
                 geopolitics: document.getElementById('grid-geopolitics'),
                 sport: document.getElementById('grid-sport')
             };
+
             Object.values(grids).forEach(g => g.innerHTML = '');
-            allNews.forEach((item, index) => {
-                const html = createCardHTML(item, index);
+
+            newsData.forEach(item => {
+                const html = createCardHTML(item);
                 grids.all.insertAdjacentHTML('beforeend', html);
-                if (item.category === "Политика") grids.politics.insertAdjacentHTML('beforeend', html);
-                                if (item.category === "Политика") grids.politics.insertAdjacentHTML('beforeend', html);
-                if (item.category === "Регионы") grids.regions.insertAdjacentHTML('beforeend', html);
-                if (item.category === "Абсурд") grids.absurd.insertAdjacentHTML('beforeend', html);
-                if (item.category === "Криминал") grids.crime.insertAdjacentHTML('beforeend', html);
-                if (item.category === "Геополитика") grids.geopolitics.insertAdjacentHTML('beforeend', html);
-                if (item.category === "Спорт") grids.sport.insertAdjacentHTML('beforeend', html);
+
+                const cat = item.category;
+                if (cat === "Политика") grids.politics.insertAdjacentHTML('beforeend', html);
+                if (cat === "Регионы") grids.regions.insertAdjacentHTML('beforeend', html);
+                if (cat === "Абсурд") grids.absurd.insertAdjacentHTML('beforeend', html);
+                if (cat === "Криминал") grids.crime.insertAdjacentHTML('beforeend', html);
+                if (cat === "Геополитика") grids.geopolitics.insertAdjacentHTML('beforeend', html);
+                if (cat === "Спорт") grids.sport.insertAdjacentHTML('beforeend', html);
             });
+            
             attachHandlers();
         }
 
         function attachHandlers() {
             document.querySelectorAll('.news-card').forEach(card => {
                 card.addEventListener('click', () => {
-                    const isExpanded = card.classList.contains('expanded');
-                    card.querySelector('.card-summary').style.display = isExpanded ? 'block' : 'none';
-                    card.querySelector('.full-content').style.display = isExpanded ? 'none' : 'block';
                     card.classList.toggle('expanded');
                 });
             });
+
+            const burger = document.getElementById('burger');
+            const menu = document.getElementById('mobileMenu');
+            burger.addEventListener('click', () => {
+                burger.classList.toggle('active');
+                menu.classList.toggle('open');
+            });
         }
 
-        const searchInput = document.getElementById('siteSearch');
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            if (query.length < 2) return;
-            const cards = document.querySelectorAll('#grid-all .news-card');
-            let found = false;
-            cards.forEach(card => {
-                const title = card.querySelector('.card-title').innerText.toLowerCase();
-                const content = card.querySelector('.full-content').innerText.toLowerCase();
-                if (!found && (title.includes(query) || content.includes(query))) {
-                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    card.classList.add('search-highlight');
-                    setTimeout(() => card.classList.remove('search-highlight'), 2000);
-                    found = true;
-                }
-            });
-        });
-
-        const burger = document.getElementById('burger');
-        const mobileMenu = document.getElementById('mobileMenu');
-        burger.addEventListener('click', () => {
-            burger.classList.toggle('active');
-            mobileMenu.classList.toggle('open');
-        });
-
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                burger.classList.remove('active');
-                mobileMenu.classList.remove('open');
-                const targetId = link.getAttribute('href').replace('#', '');
-                const targetElement = document.getElementById(targetId);
-                if(targetElement) {
-                    window.scrollTo({ top: targetElement.offsetTop - 80, behavior: 'smooth' });
-                }
-            });
-        });
-        
-        renderGrids();
+        loadNews();
     </script>
 </body>
 </html>
