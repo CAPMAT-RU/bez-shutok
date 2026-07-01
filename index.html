@@ -1,6 +1,6 @@
+
 <!DOCTYPE html>
-<html lang="ru">
-<head>
+<html lang="ru"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Без шуток — Все новости</title>
@@ -14,27 +14,40 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         
-        body { 
+        body {
             background-color: var(--bg-color); 
-            color: var(--text-color); 
+            color: var(--text-color);
             min-height: 100vh; 
-            display: flex; 
+            display: flex;
             flex-direction: column; 
         }
 
         header { 
-            position: fixed; 
-            top: 0; 
+            position: fixed;            top: 0; 
             left: 0; 
-            width: 100%; 
+            width: 100%;
             height: 60px; 
-            background-color: var(--bg-color);
-            display: flex; 
+            background-color: var(--bg-color);display: flex; 
             justify-content: space-between; 
-            align-items: center; 
-            padding: 0 40px; 
-            z-index: 1000; 
+            align-items: center;
+            padding: 0 15px; 
+            z-index: 1000;
             border-bottom: 1px solid #333;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;        }
+
+        .header-right {
+            display: flex;
+            align-items: center;            gap: 20px;
+        }
+
+        .site-logo-img {
+            height: 35px;
+            width: auto;
         }
 
         .logo { 
@@ -43,20 +56,31 @@
             letter-spacing: 1px; 
             color: var(--accent-color); 
         }
-        
+
+        #siteSearch {
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 6px 15px;
+            border-radius: 20px;
+            outline: none;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            width: 180px;        }
+        #siteSearch:focus {
+            border-color: var(--accent-color);}
+
         .burger { 
             cursor: pointer; 
-            width: 30px; 
+            width: 30px;
             height: 21px; 
-            position: relative; 
-            outline: none; 
-        }
+            position: relative;
+            outline: none;        }
         .burger span { 
-            position: absolute; 
+            position: absolute;
             width: 100%; 
-            height: 3px; 
-            background-color: var(--text-color); 
-            border-radius: 2px; 
+            height: 3px;
+            background-color: var(--text-color);border-radius: 2px;
             transition: all 0.3s ease; 
         }
         .burger span:nth-child(1) { top: 0; }
@@ -68,27 +92,27 @@
 
         .mobile-menu { 
             position: fixed; 
-            top: 60px;
+            top: 0;
             left: -100%; 
             width: 70%; 
-            height: calc(100vh - 60px); 
+            height: 100vh; 
             background-color: var(--menu-bg); 
-            padding: 20px 20px; 
-            transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
-            z-index: 999; 
+            padding: 40px 20px; 
+            transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index:1100;
             display: flex; 
             flex-direction: column; 
-            gap: 15px; 
+            gap: 15px;
         }
         .mobile-menu.open { left: 0; }
         
         .nav-link { 
             color: var(--text-color); 
-            text-decoration: none; 
-            font-size: 18px; 
-            padding: 8px 0; 
+            text-decoration: none;
+            font-size: 18px;
+            padding: 12px 0;
             border-bottom: 1px solid #444; 
-            cursor: pointer; 
+            cursor: pointer;
             user-select: none; 
             transition: color 0.2s; 
             outline: none;
@@ -97,77 +121,73 @@
 
         main { 
             margin-top: 60px; 
-            padding: 40px; 
+            padding: 40px;
             max-width: 1200px; 
-            margin-left: auto; 
-            margin-right: auto; 
+            margin-left: auto;margin-right: auto; 
             width: 100%; 
-            flex: 1;
-        }
+            flex:1;        }
         
-        .filter-buttons { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
-        .filter-btn {
-            background: transparent; 
-            border: 1px solid #444; 
-            color: #aaa; 
-            padding: 8px 16px; 
-            cursor: pointer; 
-            border-radius: 6px; 
-            font-size: 14px;
-        }
-        .filter-btn:hover {
-            border-color: var(--accent-color); 
-            color: var(--accent-color); 
-            background: rgba(255,71,87,0.1);
-        }
-
-        h2.section-title { margin-bottom: 20px; border-left: 5px solid var(--accent-color); padding-left: 15px; }
-
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        h2.section-title { margin-bottom: 20px; border-left: 5px solid var(--accent-color); padding-left: 15px; }.news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom:50px; }
 
         .news-card {
             background-color: var(--card-bg); 
             padding: 20px; 
             border-radius: 12px;
-            transition: transform 0.2s, box-shadow 0.2s; 
+            transition: transform0.2s, box-shadow 0.2s;
             display: flex; 
             flex-direction: column;
-            cursor: pointer; 
-            outline: none; 
+            cursor: pointer;
+            outline: none;
         }
         .news-card:hover { 
-    transform: translateY(-5px); 
-    box-shadow: 0 10px 30px rgba(255, 71, 87, 0.5); /* красный оттенок вместо чёрного */
-}
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 30px rgba(255, 71,87, 0.5);
+        }
+        .card-media { width: 100%; border-radius:8px; margin-bottom: 15px; }
+        .category-tag { color: var(--accent-color); font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
+        .card-title { font-size: 20px; margin-bottom: 15px; line-height: 1.3; }
         .author { font-weight: bold; color: var(--text-color); }
         .publish-date { color: #888; margin-right: 10px; }
         .publish-time { color: #888; }
+        .card-meta { margin-top: auto; font-size: 14px; }
 
         .full-content { display: none; margin-top: 15px; font-size: 16px; line-height: 1.6; color: #ddd; }
         .expanded .full-content { display: block; }
         .expanded .card-summary { display: none; }
 
-        footer { text-align: center; padding: 40px 20px; border-top: 1px solid #333; margin-top: auto; }
-        .copyright { font-size: 18px; font-weight: bold; color: var(--text-color); }
+        footer { 
+            padding: 40px 20px; 
+            border-top: 1px solid #333; 
+            margin-top: auto;
+            text-align: center;
+        }
+        
+        .copyright { font-size: 14px; color: #666; }
 
-        /* ГЛАВНОЕ: убираем синее выделение при клике */
         .news-card:focus, .news-card:active,
-        .filter-btn:focus, .filter-btn:active,
         .nav-link:focus, .nav-link:active,
         a:focus, a:active {
             outline: none;
             -webkit-tap-highlight-color: transparent;
         }
-    </style>
+
+        .search-highlight {
+            outline: 2px solid var(--accent-color);            box-shadow: 0 0 20px var(--accent-color);
+        }</style>
 </head>
 <body>
 
     <header>
-        <div class="logo">Без шуток</div>
-        <div class="burger" id="burger">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="header-left">
+            <img src="https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/Logotip.png" class="site-logo-img">
+            <div class="logo">Без шуток</div>
+        </div>
+        <div class="header-right">
+            <input type="text" id="siteSearch" placeholder="Поиск по сайту...">
+            <div class="burger" id="burger"><span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </header>
 
@@ -179,15 +199,6 @@
     </nav>
 
     <main>
-        <div class="filter-buttons">
-            <button class="filter-btn" onclick="filterNews('all')">Все</button>
-            <button class="filter-btn" onclick="filterNews('Политика')">Политика</button>
-            <button class="filter-btn" onclick="filterNews('Регионы')">Регионы</button>
-            <button class="filter-btn" onclick="filterNews('Абсурд')">Абсурд</button>
-        </div>
-
-        <h1>Все последние новости</h1>
-
         <div id="all">
             <h2 class="section-title">Все новости подряд</h2>
             <div class="news-grid" id="grid-all"></div>
@@ -200,13 +211,11 @@
 
         <div id="regions">
             <h2 class="section-title">Регионы</h2>
-            <div class="news-grid" id="grid-regions"></div>
-        </div>
+            <div class="news-grid" id="grid-regions"></div>        </div>
 
         <div id="absurd">
             <h2 class="section-title">Абсурдные новости</h2>
-            <div class="news-grid" id="grid-absurd"></div>
-        </div>
+            <div class="news-grid" id="grid-absurd"></div>        </div>
     </main>
 
     <footer>
@@ -214,8 +223,7 @@
     </footer>
 
     <script>
-        const allNews = [
-            {
+        const allNews = [{
                 title: "Зумеры не хотят переработку",
                 category: "Регионы",
                 author: "Автор: Дмитрий Мусиенко",
@@ -234,8 +242,7 @@
                 content: "В Госдуме решили, что GTA 6 — это не просто игра, а настоящий сгусток американского зла. Депутат Виталий Милонов взял на себя роль главного моралистa и заявил, что в новой части всё про насилие и хулиганство, что, конечно, соответствует некоему «американскому образу жизни». Но не переживайте, наши геймеры, по словам Милонова, вас это не касается. «Нормальные люди» же вряд ли потянутся за персонажами из игры - ведь кто, как не депутат, знает, что в Америке дела обстоят иначе? В общем, пока мы тут такую ерунду обсуждаем, игроки в мире безумия развлекаются."
             },
             {
-                title: "Топливный кризис в России",
-                category: "Политика",
+                title: "Топливный кризис в России",category: "Политика",
                 author: "САРМАТ",
                 date: "30.06.2026",
                 time: "17:16",
@@ -244,129 +251,85 @@
             }                             
         ];
 
-        function createCardHTML(item, uniqueId) {
+        function createCardHTML(item, index) {
             return `
-                <article class="news-card" data-id="${uniqueId}">
+                <article class="news-card" data-index="${index}">
                     <img src="${item.image}" alt="${item.title}" class="card-media" onerror="this.src='https://via.placeholder.com/300x200/333/fff?text=Image+Error'">
                     <span class="category-tag">${item.category}</span>
                     <h3 class="card-title">${item.title}</h3>
-                    
                     <div class="card-meta">
                         <span class="author">${item.author}</span>
                         <div style="display: flex; align-items: center; gap: 8px;">
-                            <span class="publish-date">${item.date || ''}</span>
-                            <span class="publish-time">${item.time || ''}</span>
+                            <span class="publish-date">${item.date || ''}</span><span class="publish-time">${item.time || ''}</span>
                         </div>
                     </div>
-
-                    <div class="card-summary" style="display: block;">
-                        <p style="color: #aaa; font-size: 14px;">Нажмите на карточку, чтобы прочитать</p>
-                    </div>
-                    <div class="full-content" style="display: none;">
-                        ${item.content.replace(/\n/g, '<br>')}
-                    </div>
+                    <div class="card-summary"><p style="color: #aaa; font-size: 14px; margin-top:10px;">Нажмите, чтобы прочитать</p></div>
+                    <div class="full-content">${item.content.replace(/\n/g, '<br>')}</div>
                 </article>
             `;
         }
 
-        function init() {
-            document.getElementById('grid-all').innerHTML = '';
-            document.getElementById('grid-politics').innerHTML = '';
-            document.getElementById('grid-regions').innerHTML = '';
-            document.getElementById('grid-absurd').innerHTML = '';
+        function renderGrids() {
+            const grids = {
+                all: document.getElementById('grid-all'),
+                politics: document.getElementById('grid-politics'),
+                regions: document.getElementById('grid-regions'),
+                absurd: document.getElementById('grid-absurd')};
+
+            Object.values(grids).forEach(g => g.innerHTML = '');
 
             allNews.forEach((item, index) => {
-                const idAll = `all_${index}`;
-                const idPolitics = `politics_${index}`;
-                const idRegions = `regions_${index}`;
-                const idAbsurd = `absurd_${index}`;
-
-                document.getElementById('grid-all').insertAdjacentHTML('beforeend', createCardHTML(item, idAll));
-                
-                if (item.category === "Политика") {
-                    document.getElementById('grid-politics').insertAdjacentHTML('beforeend', createCardHTML(item, idPolitics));
-                }
-                if (item.category === "Регионы") {
-                    document.getElementById('grid-regions').insertAdjacentHTML('beforeend', createCardHTML(item, idRegions));
-                }
-                if (item.category === "Абсурд") {
-                    document.getElementById('grid-absurd').insertAdjacentHTML('beforeend', createCardHTML(item, idAbsurd));
-                }
+                const html = createCardHTML(item, index);
+                grids.all.insertAdjacentHTML('beforeend', html);
+                if (item.category === "Политика") grids.politics.insertAdjacentHTML('beforeend', html);
+                if (item.category === "Регионы") grids.regions.insertAdjacentHTML('beforeend', html);
+                if (item.category === "Абсурд") grids.absurd.insertAdjacentHTML('beforeend', html);
             });
-            attachClickHandlers();
-        }
-
-        function attachClickHandlers() {
+            attachHandlers();
+        }function attachHandlers() {
             document.querySelectorAll('.news-card').forEach(card => {
                 card.addEventListener('click', () => {
-                    const uniqueId = card.getAttribute('data-id');
-                    const currentState = card.classList.contains('expanded');
-                    localStorage.setItem(`news_${uniqueId}`, currentState);
-                    
-                    const cardSummary = card.querySelector('.card-summary');
-                    const fullContent = card.querySelector('.full-content');
-                    if (currentState) {
-                        cardSummary.style.display = 'block';
-                        fullContent.style.display = 'none';
-                    } else {
-                        cardSummary.style.display = 'none';
-                        fullContent.style.display = 'block';
-                    }
+                    const isExpanded = card.classList.contains('expanded');
+                    card.querySelector('.card-summary').style.display = isExpanded ? 'block' : 'none';
+                    card.querySelector('.full-content').style.display = isExpanded ? 'none' : 'block';
                     card.classList.toggle('expanded');
                 });
             });
         }
 
-        function filterNews(category) {
-            // Убрали любые манипуляции с классами active — только логика отображения
-            document.querySelectorAll('.news-grid').forEach(grid => grid.style.display = 'none');
-            
-            if (category === 'all') {
-                document.getElementById('grid-all').style.display = 'grid';
-                window.scrollTo({ top: document.getElementById('all').offsetTop - 100, behavior: 'smooth' });
-            } else {
-                const idMap = {
-                    'Политика': 'grid-politics',
-                    'Регионы': 'grid-regions',
-                    'Абсурд': 'grid-absurd'
-                };
-                const gridId = idMap[category];
-                if (gridId) {
-                    document.getElementById(gridId).style.display = 'grid';
-                    const sectionId = category === 'Абсурд' ? 'absurd' : category.toLowerCase();
-                    const targetElement = document.getElementById(sectionId);
-                    if (targetElement) {
-                        window.scrollTo({ top: targetElement.offsetTop - 100, behavior: 'smooth' });
-                    }
-                }
-            }
-        }
-
-        const burger = document.getElementById('burger');
-        const mobileMenu = document.getElementById('mobileMenu');
-
-        if (burger && mobileMenu) {
-            burger.addEventListener('click', () => {
-                burger.classList.toggle('active');
-                mobileMenu.classList.toggle('open');
-            });
-        }
-
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                burger.classList.remove('active');
-                mobileMenu.classList.remove('open');
+        const searchInput = document.getElementById('siteSearch');
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (query.length < 2) return;const cards = document.querySelectorAll('#grid-all .news-card');
+            let found = false;cards.forEach(card => {
+                const title = card.querySelector('.card-title').innerText.toLowerCase();
+                const content = card.querySelector('.full-content').innerText.toLowerCase();
                 
-                const targetId = link.getAttribute('href').replace('#', '');
-                const targetElement = document.getElementById(targetId);
-                if(targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (!found && (title.includes(query) || content.includes(query))) {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    card.classList.add('search-highlight');                    setTimeout(() => card.classList.remove('search-highlight'), 2000);
+                    found = true;
                 }
             });
         });
 
-        init();
+        const burger = document.getElementById('burger');const mobileMenu = document.getElementById('mobileMenu');
+
+        burger.addEventListener('click', () => {burger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        });document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                burger.classList.remove('active');
+                mobileMenu.classList.remove('open');
+                const targetId = link.getAttribute('href').replace('#', '');
+                const targetElement = document.getElementById(targetId);
+                if(targetElement) {
+                    window.scrollTo({ top: targetElement.offsetTop - 80, behavior: 'smooth' });
+                }
+            });        });
+
+        renderGrids();
     </script>
 </body>
 </html>
