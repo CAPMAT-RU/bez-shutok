@@ -13,7 +13,7 @@
             --card-bg: #1e1e1e;
             --menu-bg: #2c2c2c;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; outline: none !important; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
         header { position: fixed; top: 0; left: 0; width: 100%; height: 60px; background-color: var(--bg-color); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; z-index: 1000; border-bottom: 1px solid #333; }
         .header-left, .header-right { display: flex; align-items: center; gap: 20px; }
@@ -22,7 +22,7 @@
         #siteSearch { background: #222; border: 1px solid #444; color: #fff; padding: 6px 15px; border-radius: 20px; outline: none; font-size: 14px; transition: border-color 0.3s; width: 180px; }
         #siteSearch:focus { border-color: var(--accent-color); }
         
-        .burger { cursor: pointer; width: 30px; height: 21px; position: relative; }
+        .burger { cursor: pointer; width: 30px; height: 21px; position: relative; user-select: none; }
         .burger span { position: absolute; width: 100%; height: 3px; background-color: var(--text-color); border-radius: 2px; transition: all 0.3s ease; }
         .burger span:nth-child(1) { top: 0; }
         .burger span:nth-child(2) { top: 9px; }
@@ -33,14 +33,13 @@
 
         .mobile-menu { position: fixed; top: 0; left: -100%; width: 70%; height: 100vh; background-color: var(--menu-bg); padding: 40px 20px; transition: left 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index:1100; display: flex; flex-direction: column; gap: 15px; }
         .mobile-menu.open { left: 0; }
-        .nav-link { color: var(--text-color); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid #444; cursor: pointer; user-select: none; transition: color 0.2s; }
-        .nav-link:hover { color: var(--accent-color); }
+        .nav-link { color: var(--text-color); text-decoration: none; font-size: 18px; padding: 12px 0; border-bottom: 1px solid #444; cursor: pointer; user-select: none; transition: color 0.3s; }
+        .nav-link.active-section { color: var(--accent-color) !important; }
 
         main { margin-top: 60px; padding: 40px; max-width: 1200px; margin-left: auto; margin-right: auto; width: 100%; flex:1; }
         h2.section-title { margin-bottom: 20px; border-left: 5px solid var(--accent-color); padding-left: 15px; }
         .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom:50px; }
-        .news-card { background-color: var(--card-bg); padding: 20px; border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; cursor: pointer; }
-        .news-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255, 71,87, 0.5); }
+        .news-card { background-color: var(--card-bg); padding: 20px; border-radius: 12px; display: flex; flex-direction: column; cursor: pointer; user-select: none; }
         .card-media { width: 100%; border-radius:8px; margin-bottom: 15px; object-fit: cover; }
         .category-tag { color: var(--accent-color); font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
         .card-title { font-size: 20px; margin-bottom: 15px; line-height: 1.3; }
@@ -53,12 +52,21 @@
         .expanded .card-summary { display: none; }
         footer { padding: 40px 20px; border-top: 1px solid #333; margin-top: auto; text-align: center; }
         .copyright { font-size: 14px; color: #666; }
+
+        .news-card:active,
+        .burger:active,
+        .nav-link:active {
+            transform: none !important;
+            box-shadow: none !important;
+            background-color: var(--card-bg) !important;
+            color: var(--text-color) !important;
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="header-left">
-            <img src="https://via.placeholder.com/40/ff4757/000000?text=LOGO" class="site-logo-img" alt="Logo">
+            <img src="https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/Logotip.png" class="site-logo-img" alt="Logo">
             <div class="logo">Без шуток</div>
         </div>
         <div class="header-right">
@@ -70,13 +78,13 @@
     </header>
 
     <nav class="mobile-menu" id="mobileMenu">
-        <a href="#all" class="nav-link">Все новости</a>
-        <a href="#politics" class="nav-link">Политика</a>
-        <a href="#regions" class="nav-link">Регионы</a>
-        <a href="#absurd" class="nav-link">Абсурд</a>
-        <a href="#crime" class="nav-link">Криминал</a>
-        <a href="#geopolitics" class="nav-link">Геополитика</a>
-        <a href="#sport" class="nav-link">Спорт</a>
+        <a href="#all" class="nav-link" data-section="all">Все новости</a>
+        <a href="#politics" class="nav-link" data-section="politics">Политика</a>
+        <a href="#regions" class="nav-link" data-section="regions">Регионы</a>
+        <a href="#absurd" class="nav-link" data-section="absurd">Абсурд</a>
+        <a href="#crime" class="nav-link" data-section="crime">Криминал</a>
+        <a href="#geopolitics" class="nav-link" data-section="geopolitics">Геополитика</a>
+        <a href="#sport" class="nav-link" data-section="sport">Спорт</a>
     </nav>
 
     <main>
@@ -100,6 +108,7 @@
                 if (!response.ok) throw new Error('Файл не найден');
                 const data = await response.json();
                 renderGrids(data);
+                setupSearch(data);
             } catch (error) {
                 console.error(error);
                 document.getElementById('grid-all').innerHTML = '<p style="color:red; text-align:center;">Ошибка! Проверь, лежит ли файл news.json рядом с index.html и запущен ли сервер (Live Server).</p>';
@@ -108,7 +117,7 @@
 
         function createCardHTML(item) {
             return `
-                <article class="news-card">
+                <article class="news-card" data-search-text="${item.title.toLowerCase()} ${item.content ? item.content.toLowerCase() : ''} ${item.category.toLowerCase()}">
                     <img src="${item.image || 'https://via.placeholder.com/300x200/333/fff?text=No+Image'}" 
                          alt="${item.title}" class="card-media">
                     <span class="category-tag">${item.category}</span>
@@ -155,6 +164,59 @@
             attachHandlers();
         }
 
+        function setupSearch(allNews) {
+            const searchInput = document.getElementById('siteSearch');
+            
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                
+                if (!query) {
+                    renderGrids(allNews);
+                    return;
+                }
+
+                const filtered = allNews.filter(item => 
+                    item.title.toLowerCase().includes(query) || 
+                    (item.content && item.content.toLowerCase().includes(query)) || 
+                    item.category.toLowerCase().includes(query)
+                );
+
+                const gridsObj = {
+                    all: document.getElementById('grid-all'),
+                    politics: document.getElementById('grid-politics'),
+                    regions: document.getElementById('grid-regions'),
+                    absurd: document.getElementById('grid-absurd'),
+                    crime: document.getElementById('grid-crime'),
+                    geopolitics: document.getElementById('grid-geopolitics'),
+                    sport: document.getElementById('grid-sport')
+                };
+
+                Object.values(gridsObj).forEach(g => g.innerHTML = '');
+
+                filtered.forEach(item => {
+                    const html = createCardHTML(item);
+                    gridsObj.all.insertAdjacentHTML('beforeend', html);
+
+                    const cat = item.category;
+                    if (cat === "Политика") gridsObj.politics.insertAdjacentHTML('beforeend', html);
+                    if (cat === "Регионы") gridsObj.regions.insertAdjacentHTML('beforeend', html);
+                    if (cat === "Абсурд") gridsObj.absurd.insertAdjacentHTML('beforeend', html);
+                    if (cat === "Криминал") gridsObj.crime.insertAdjacentHTML('beforeend', html);
+                    if (cat === "Геополитика") gridsObj.geopolitics.insertAdjacentHTML('beforeend', html);
+                    if (cat === "Спорт") gridsObj.sport.insertAdjacentHTML('beforeend', html);
+                });
+
+                if (filtered.length > 0) {
+                    window.scrollTo({
+                        top: document.querySelector('.section-title').offsetTop,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    document.getElementById('grid-all').innerHTML = '<p style="color:#aaa; text-align:center; padding:20px;">Ничего не найдено</p>';
+                }
+            });
+        }
+
         function attachHandlers() {
             document.querySelectorAll('.news-card').forEach(card => {
                 card.addEventListener('click', () => {
@@ -164,13 +226,41 @@
 
             const burger = document.getElementById('burger');
             const menu = document.getElementById('mobileMenu');
-            burger.addEventListener('click', () => {
-                burger.classList.toggle('active');
-                menu.classList.toggle('open');
+            if (burger && menu) {
+                burger.addEventListener('click', () => {
+                    burger.classList.toggle('active');
+                    menu.classList.toggle('open');
+                });
+            }
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    const sectionId = link.getAttribute('data-section');
+                    const targetSection = document.getElementById(sectionId);
+                    
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active-section'));
+                    link.classList.add('active-section');
+
+                    const burgerCheck = document.getElementById('burger');
+                    const menuCheck = document.getElementById('mobileMenu');
+                    if (burgerCheck && menuCheck) {
+                        burgerCheck.classList.remove('active');
+                        menuCheck.classList.remove('open');
+                    }
+                });
             });
         }
 
-        loadNews();
+                loadNews();
     </script>
 </body>
 </html>
