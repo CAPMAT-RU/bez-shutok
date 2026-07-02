@@ -118,6 +118,32 @@
             outline: none;
             -webkit-tap-highlight-color: transparent;
         }
+        /* Контейнер для прижатия к низу */
+.social-in-menu {
+    margin-top: auto; /* Магия: утягивает блок в самый низ меню */
+    padding-top: 15px;
+}
+
+/* Ссылка-обёртка */
+.social-link {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Расстояние между картинкой и текстом */
+    color: #fff; /* Белый цвет текста */
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* Сама картинка — вот тут вся адаптация */
+.social-icon {
+    width: 32px;   /* Чуть больше, чтобы было красиво */
+    height: 32px;
+    object-fit: cover; /* Картинка заполнит квадрат, но не исказится */
+    border-radius: 8px; /* Скругление уголков (как у современных иконок) */
+    flex-shrink: 0;     /* Запрещаем картинке сжиматься, если текст длинный */
+}
+
     </style>
 </head>
 <body>
@@ -148,7 +174,23 @@
         <a href="#crime" class="nav-link">Криминал</a>
         <a href="#geopolitics" class="nav-link">Геополитика</a>
         <a href="#sport" class="nav-link">Спорт</a>
-    </nav>
+<!-- Разделитель -->
+<div style="width: 100%; height: 1px; background: rgba(255,255,255,0.3); margin: 20px 0;"></div>
+
+<!-- Блок соцсетей -->
+<div class="social-in-menu">
+    <a href="https://t.me/bez_shutok_ru" target="_blank" rel="noopener noreferrer" class="social-link">
+        <img src="https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260702_145815.png" alt="Telegram" class="social-icon">
+        <span>Telegram</span>
+    </a>
+    
+    <a href="https://vk.ru/bez_shutok_ru" target="_blank" rel="noopener noreferrer" class="social-link">
+        <img src="https://raw.github.com/CAPMAT-RU/bez-shutok/main/images/IMG_20260702_145914.png" alt="ВКонтакте" class="social-icon">
+        <span>ВКонтакте</span>
+    </a>
+</div>
+
+</nav>
     <main>
         <div id="all">
             <h2 class="section-title">Все новости подряд</h2>
@@ -177,7 +219,8 @@
         <div id="sport">
             <h2 class="section-title">Спорт</h2>
             <div class="news-grid" id="grid-sport"></div>
-        </div>
+        
+</div>
     </main>
     <footer>
         <p class="copyright">2026 © «Без шуток»</p>
@@ -309,7 +352,7 @@
                 }
             });
         });
-
+        
         loadNewsFromFile();
     </script>
 </body>
